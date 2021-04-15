@@ -1,0 +1,6 @@
+{
+    "extends": "vtex-react/io",
+    "rules": {
+      "react/jsx-filename-extension": 0
+    }
+  }

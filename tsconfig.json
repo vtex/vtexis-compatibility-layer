@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "types": [
+            "node"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "target": "es2019",
+        "lib": [
+            "es2019",
+            "esnext.asynciterable"
+        ],
+        "module": "commonjs",
+        "strict": true,
+        "declaration": true,
+        "outDir": "lib",
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": [
+        "**/__tests__",
+        "**/*.test.ts"
+    ]
+}
