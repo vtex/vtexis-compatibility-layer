@@ -1,4 +1,5 @@
-import { distinct, objToNameValue } from './utils/object'
+import { pathOr } from 'ramda'
+import { distinct, getMaxAndMinForAttribute, objToNameValue } from './utils'
 
 export enum IndexingType {
   API = 'API',
@@ -118,6 +119,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     link: product.url,
     description: product.description,
     items: skus,
+    priceRange: getPriceRange(skus),
     allSpecifications,
     categoryId: product.categoryIds?.slice(-1)[0],
     productTitle: '',
@@ -135,8 +137,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     skuSpecifications: allSkuSpecification,
     // This field is only maintained for backwards compatibility reasons, it shouldn't exist.
     skus: skus.find((sku) => sku.sellers && sku.sellers.length > 0),
-    properties: getProperties(specificationGroups),
-    specificationGroups
+    properties: [],
   }
 
   if (product.extraData) {
@@ -169,6 +170,9 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     convertedProduct[specificationGroup] =
       convertedProduct[specificationGroup] ?? specificationGroups[specificationGroup]
   })
+
+  convertedProduct.properties = getProperties(convertedProduct)
+  convertedProduct.specificationGroups = getSpecificationGroups(convertedProduct)
 
   return convertedProduct
 }
@@ -331,7 +335,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
     itemId: sku.id,
     name: sku.name,
     nameComplete: sku.nameComplete,
-    complementName: product.name,
+    complementName: sku.complementName ?? '',
     referenceId: [
       {
         Key: 'RefId',
@@ -363,9 +367,68 @@ const getSpotPrice = (sellingPrice: number, installments: SearchInstallment[]) =
   return spotPrice ?? sellingPrice
 }
 
-const getProperties = (specificationGroups: Record<string, string[]>) =>
-  Object.keys(specificationGroups).map((name) => ({
-    name,
-    originalName: name,
-    values: specificationGroups[name],
-  }))
+const getProperties = (
+  product: SearchProduct & {
+    [key: string]: any
+  }
+) =>
+  (product.allSpecifications ?? []).map((name: string) => {
+    const value = product[name]
+    return { name, originalName: name, values: value }
+  })
+
+const getSpecificationGroups = (
+  product: SearchProduct & {
+    [key: string]: any
+  }
+) => {
+  const allSpecificationsGroups = (product.allSpecificationsGroups ?? []).concat(['allSpecifications'])
+
+  const visibleSpecifications = product.completeSpecifications
+    ? product.completeSpecifications.reduce<Record<string, boolean>>((acc, specification) => {
+        acc[specification.Name] = specification.IsOnProductDetails
+        return acc
+      }, {})
+    : null
+
+  return allSpecificationsGroups.map((groupName: string) => {
+    let groupSpecifications = ((product as unknown) as DynamicKey<string[]>)?.[groupName] ?? []
+
+    groupSpecifications = groupSpecifications.filter((specificationName) => {
+      if (visibleSpecifications && visibleSpecifications[specificationName] != null)
+        return visibleSpecifications[specificationName]
+      return true
+    })
+
+    return {
+      originalName: groupName,
+      name: groupName,
+      specifications: groupSpecifications.map((name) => {
+        const values = ((product as unknown) as DynamicKey<string[]>)[name] || []
+        return {
+          originalName: name,
+          name,
+          values,
+        }
+      }),
+    }
+  })
+}
+
+const isSellerAvailable = (seller: Seller) => pathOr(0, ['commertialOffer', 'AvailableQuantity'], seller) > 0
+
+const getPriceRange = (searchItems: SearchItem[]) => {
+  const offers = searchItems.reduce<CommertialOffer[]>((acc, currentItem) => {
+    for (const seller of currentItem.sellers) {
+      if (isSellerAvailable(seller)) {
+        acc.push(seller.commertialOffer)
+      }
+    }
+    return acc
+  }, [])
+
+  return {
+    sellingPrice: getMaxAndMinForAttribute(offers, 'Price'),
+    listPrice: getMaxAndMinForAttribute(offers, 'ListPrice'),
+  }
+}
