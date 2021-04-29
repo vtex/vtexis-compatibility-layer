@@ -1,4 +1,4 @@
-import { distinct } from './utils/object'
+import { distinct, objToNameValue } from './utils/object'
 
 export enum IndexingType {
   API = 'API',
@@ -122,8 +122,8 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     categoryId: product.categoryIds?.slice(-1)[0],
     productTitle: '',
     metaTagDescription: '',
-    clusterHighlights: product.clusterHighlights,
-    productClusters: {},
+    clusterHighlights: objToNameValue('id', 'name', product.clusterHighlights),
+    productClusters: [],
     searchableClusters: {},
     titleTag: '',
     Specifications: [],
@@ -135,6 +135,8 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     skuSpecifications: allSkuSpecification,
     // This field is only maintained for backwards compatibility reasons, it shouldn't exist.
     skus: skus.find((sku) => sku.sellers && sku.sellers.length > 0),
+    properties: getProperties(specificationGroups),
+    specificationGroups
   }
 
   if (product.extraData) {
@@ -158,7 +160,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
       .filter((attribute) => attribute.labelKey === 'productClusterNames')
       .forEach((attribute) => {
         if (attribute.valueId) {
-          convertedProduct.productClusters[attribute.valueId] = attribute.labelValue
+          convertedProduct.productClusters.push({ id: attribute.valueId, name: attribute.labelValue })
         }
       })
   }
@@ -215,6 +217,8 @@ const buildCommertialOffer = (
     Installments: installments,
     Price: price,
     ListPrice: oldPrice,
+    spotPrice: getSpotPrice(price, installments),
+    taxPercentage: (tax || 0) / price,
     PriceWithoutDiscount: oldPrice,
     Tax: tax || 0,
     GiftSkuIds: [],
@@ -351,3 +355,17 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
 
   return item
 }
+
+const getSpotPrice = (sellingPrice: number, installments: SearchInstallment[]) => {
+  const spotPrice: number | undefined = installments.find(({ NumberOfInstallments, Value }: any) => {
+    return NumberOfInstallments === 1 && Value < sellingPrice
+  })?.Value
+  return spotPrice ?? sellingPrice
+}
+
+const getProperties = (specificationGroups: Record<string, string[]>) =>
+  Object.keys(specificationGroups).map((name) => ({
+    name,
+    originalName: name,
+    values: specificationGroups[name],
+  }))

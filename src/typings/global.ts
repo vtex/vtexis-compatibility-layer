@@ -1,6 +1,7 @@
 export {}
 
 declare global {
+  type DynamicKey<T> = Record<string, T>
   interface BiggySearchProduct {
     name: string
     id: string
@@ -203,8 +204,8 @@ declare global {
     categoryId: string
     productTitle: string
     metaTagDescription: string
-    clusterHighlights: Record<string, string>
-    productClusters: Record<string, string>
+    clusterHighlights: Record<string, string>[]
+    productClusters: Record<string, string>[]
     searchableClusters: Record<string, string>
     categories: string[]
     categoriesIds: string[]
@@ -215,6 +216,7 @@ declare global {
       items: SearchMetadataItem[]
     }
     titleTag: string
+    properties: ProductProperty[]
     Specifications?: string[]
     allSpecifications?: string[]
     allSpecificationsGroups?: string[]
@@ -311,6 +313,8 @@ declare global {
     ItemMetadataAttachment: any[]
     Price: number
     ListPrice: number
+    spotPrice: number
+    taxPercentage: number
     PriceWithoutDiscount: number
     RewardValue: number
     PriceValidUntil: string
@@ -480,5 +484,11 @@ declare global {
   interface ElasticImage {
     name: string
     value: string
+  }
+
+  interface ProductProperty {
+    name: string
+    originalName: string,
+    values: string[]
   }
 }
