@@ -107,7 +107,7 @@ declare global {
     stock: number
     tax: number
     default: boolean
-    teasers?: object[]
+    teasers?: Teaser[]
     installment?: BiggyInstallment
   }
 
@@ -190,10 +190,7 @@ declare global {
     behavior?: FacetsBehavior
   }
 
-  enum FacetsBehavior {
-    STATIC = 'Static',
-    DYNAMIC = 'Dynamic',
-  }
+  type FacetsBehavior = 'Static' | 'Dynamic'
 
   interface SearchProduct {
     productId: string
@@ -205,8 +202,8 @@ declare global {
     categoryId: string
     productTitle: string
     metaTagDescription: string
-    clusterHighlights: Record<string, string>[]
-    productClusters: Record<string, string>[]
+    clusterHighlights: Array<Record<string, string>>
+    productClusters: Array<Record<string, string>>
     searchableClusters: Record<string, string>
     categories: string[]
     categoriesIds: string[]
@@ -231,7 +228,7 @@ declare global {
     nameComplete: string
     complementName: string
     ean: string
-    referenceId: { Key: string; Value: string }[]
+    referenceId: Array<{ Key: string; Value: string }>
     measurementUnit: string
     unitMultiplier: number
     modalType: any | null
@@ -239,25 +236,25 @@ declare global {
     Videos: string[]
     variations: string[]
     sellers: Seller[]
-    attachments: {
+    attachments: Array<{
       id: number
       name: string
       required: boolean
       domainValues: string
-    }[]
+    }>
     isKit: boolean
-    kitItems?: {
+    kitItems?: Array<{
       itemId: string
       amount: number
-    }[]
+    }>
   }
 
   interface CompleteSpecification {
-    Values: {
+    Values: Array<{
       Id: string
       Position: number
       Value: string
-    }[]
+    }>
     Name: string
     Position: number
     IsOnProductDetails: boolean
@@ -309,7 +306,7 @@ declare global {
     Installments: SearchInstallment[]
     DiscountHighLight: any[]
     GiftSkuIds: string[]
-    Teasers: object[]
+    Teasers: Teaser[]
     BuyTogether: any[]
     ItemMetadataAttachment: any[]
     Price: number
@@ -321,10 +318,10 @@ declare global {
     PriceValidUntil: string
     AvailableQuantity: number
     Tax: number
-    DeliverySlaSamples: {
+    DeliverySlaSamples: Array<{
       DeliverySlaPerTypes: any[]
       Region: any | null
-    }[]
+    }>
     GetInfoErrorMessage: any | null
     CacheVersionUsedToCallCheckout: string
   }
@@ -367,7 +364,7 @@ declare global {
     Brands: SearchFacet[]
     SpecificationFilters: Record<string, SearchFacet[]>
     CategoriesTrees: SearchFacetCategory[]
-    PriceRanges: {
+    PriceRanges: Array<{
       Slug: string
       Quantity: number
       Name: string
@@ -375,7 +372,7 @@ declare global {
       LinkEncoded: string
       Map: null
       Value: string
-    }[]
+    }>
     Summary: {
       Departments: SummaryItem
       CategoriesTrees: SummaryItem
@@ -489,7 +486,27 @@ declare global {
 
   interface ProductProperty {
     name: string
-    originalName: string,
+    originalName: string
     values: string[]
+  }
+
+  interface Teaser {
+    name: string
+    conditions: TeaserCondition
+    effects: TeaserEffects
+  }
+
+  interface TeaserCondition {
+    minimumQuantity: number
+    parameters: TeaserValue[]
+  }
+
+  interface TeaserEffects {
+    parameters: TeaserValue[]
+  }
+
+  interface TeaserValue {
+    name: string
+    value: string
   }
 }
