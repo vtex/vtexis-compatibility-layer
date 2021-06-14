@@ -1,5 +1,5 @@
 import { pathOr } from 'ramda'
-import { distinct, getMaxAndMinForAttribute, objToNameValue } from './utils'
+import { getMaxAndMinForAttribute, objToNameValue } from './utils'
 
 export enum IndexingType {
   API = 'API',
@@ -17,8 +17,6 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
 
   const skus: SearchItem[] = (product.skus || []).map(convertSKU(product, indexingType, tradePolicy))
 
-  const allSpecifications = (product.productSpecifications ?? []).concat(getSKUSpecifications(product))
-
   const specificationGroups = product.specificationGroups ? JSON.parse(product.specificationGroups) : {}
 
   const allSpecificationsGroups = [...Object.keys(specificationGroups)]
@@ -33,6 +31,9 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
   ]
 
   const specificationAttributes = product.textAttributes?.filter((attribute) => attribute.isSku) ?? []
+
+  const allSpecifications = (product.productSpecifications ?? [])
+    .concat(specificationAttributes.map(specification => specification.labelKey))
 
   const specificationsByKey = specificationAttributes.reduce(
     (specsByKey: { [key: string]: BiggyTextAttribute[] }, spec) => {
@@ -112,7 +113,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     productId: product.id,
     cacheId: `sp-${product.id}`,
     productName: product.name,
-    productReference: product.reference || product.product || product.id,
+    productReference: product.reference,
     linkText: product.link,
     brand: product.brand || '',
     brandId,
@@ -181,13 +182,6 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
 
 const getVariations = (sku: BiggySearchSKU): string[] => {
   return sku.attributes.map((attribute) => attribute.key)
-}
-
-const getSKUSpecifications = (product: BiggySearchProduct): string[] => {
-  return product.skus
-    .map((sku) => sku.attributes.map((attribute) => attribute.key))
-    .reduce((acc, val) => acc.concat(val), [])
-    .filter(distinct)
 }
 
 const buildCommertialOffer = (

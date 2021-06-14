@@ -19,6 +19,8 @@
     "url": "https://github.com/vtex/vtexis-compatibility-layer"
   },
   "devDependencies": {
+    "@types/node": "^15.12.2",
+    "@types/ramda": "^0.27.40",
     "@vtex/tsconfig": "^0.5.6",
     "prettier": "^2.2.1",
     "typescript": "^4.2.4"
