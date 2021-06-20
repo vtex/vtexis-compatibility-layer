@@ -8,7 +8,7 @@ declare global {
     timestamp: number
     product: string
     description: string
-    reference: string
+    reference?: string
     url: string
     link: string
     oldPrice: number
@@ -28,39 +28,90 @@ declare global {
     productSpecifications: string[]
     specificationGroups: string
     textAttributes: BiggyTextAttribute[]
-    numberAttributes: BiggyTextAttribute[]
-    split: BiggySplit
+    numberAttributes: BiggyNumberAttribute[]
+    split?: BiggySplit
     categoryTrees: BiggyCategoryTree[]
     clusterHighlights: Record<string, string>
+    year: number
+    release: number
+    wear: number
+    discount: number
+    showIfNotAvailable: boolean
+    collections: BiggyCollection[]
+    customSort: number
+    stickers: BiggySticker[]
+    availableTradePolicies: string[]
+    locationAttributes: string[]
+    productScore: number
+    storeSplitAttribute: string
+    boost: BiggyBoost
+    headSku: string
+    extraInfo: BiggyExtraInfo
+    oldPriceText: string
+    priceText: string
+  }
+
+  interface BiggyExtraInfo {
+    sellerId: string
+  }
+  interface BiggyBoost {
+    newness: number
+    image: number
+    revenue: number
+    discount: number
+    productScore: number
+    click: number
+    availableSpecsCount: number
+    promotion: number
+    order: number
+  }
+
+  interface BiggyCollection {
+    id: string
+    position: number
+  }
+
+  interface BiggySticker {
+    image: string
+    name: string
+    location: string
+    target: string
   }
 
   interface BiggyInstallment {
     value: number
     count: number
     interest: boolean
+    paymentGroupName: string
+    paymentName: string
+    valueText?: string
   }
 
   interface BiggyProductImage {
-    name: string
+    name?: string
     value: string
   }
 
   interface BiggySearchSKU {
     name: string
     nameComplete: string
-    complementName: string
+    complementName?: string
     id: string
     ean?: string
+    idWithSplit: string
     reference: string
-    image: string
+    image?: string
     images: BiggyProductImage[]
     videos?: string[]
-    stock: number
-    oldPrice: number
-    price: number
-    measurementUnit: string
-    unitMultiplier: number
-    link: string
+    icon?: string
+    stock?: number
+    oldPrice?: number
+    oldPriceText?: string
+    price?: number
+    priceText?: string
+    measurementUnit?: string
+    unitMultiplier?: number
+    link?: string
     attributes: BiggySKUAttribute[]
     sellers: BiggySeller[]
     policies: BiggyPolicy[]
@@ -77,11 +128,19 @@ declare global {
     key: string
     value: string
     isFilter: boolean
-    id: string
-    valueId: string
+    id: string[]
+    valueId?: string
     isSku: boolean
     joinedKey: string
     joinedValue: string
+    joinedKeyTranslations: { [key: string]: string }
+    joinedValueTranslations: { [key: string]: string }
+  }
+
+  interface BiggyNumberAttribute {
+    labelKey: string
+    value: number
+    key: string
   }
 
   interface BiggySplit {
@@ -102,9 +161,9 @@ declare global {
   interface BiggySeller {
     id: string
     name: string
-    oldPrice: number
-    price: number
-    stock: number
+    oldPrice?: number
+    price?: number
+    stock?: number
     tax: number
     default: boolean
     teasers?: Teaser[]
@@ -193,24 +252,26 @@ declare global {
   type FacetsBehavior = 'Static' | 'Dynamic'
 
   interface SearchProduct {
+    cacheId: string
     productId: string
     productName: string
     brand: string
     brandId: number
     linkText: string
-    productReference: string
+    productReference?: string
     categoryId: string
-    productTitle: string
+    categoryTree: Category[]
+    productTitle?: string
     metaTagDescription: string
     clusterHighlights: Array<Record<string, string>>
     productClusters: Array<Record<string, string>>
-    searchableClusters: Record<string, string>
+    searchableClusters?: Record<string, string>
     categories: string[]
-    categoriesIds: string[]
+    categoriesIds?: string[]
     link: string
     description: string
     items: SearchItem[]
-    itemMetadata: {
+    itemMetadata?: {
       items: SearchMetadataItem[]
     }
     titleTag: string
@@ -219,7 +280,38 @@ declare global {
     allSpecifications?: string[]
     allSpecificationsGroups?: string[]
     completeSpecifications?: CompleteSpecification[]
-    skuSpecifications?: SkuSpecification[]
+    skuSpecifications: SkuSpecification[]
+    specificationGroups: SpecificationGroup[]
+    priceRange: PriceRange
+  }
+
+  interface SpecificationGroup {
+    originalName: string
+    name: string
+    specifications: SpecificationGroupProperty[]
+  }
+
+  interface SpecificationGroupProperty {
+    originalName: string
+    name: string
+    values: string[]
+  }
+
+  interface PriceRange {
+    sellingPrice: {
+      highPrice: number
+      lowPrice: number
+    }
+    listPrice: {
+      highPrice: number
+      lowPrice: number
+    }
+  }
+  interface Category {
+    id: number
+    name: string
+    href: string
+    children?: Category[]
   }
 
   interface SearchItem {
@@ -231,10 +323,10 @@ declare global {
     referenceId: Array<{ Key: string; Value: string }>
     measurementUnit: string
     unitMultiplier: number
-    modalType: any | null
+    modalType?: any | null
     images: SearchImage[]
-    Videos: string[]
-    variations: string[]
+    videos?: string[]
+    variations: Variation[]
     sellers: Seller[]
     attachments: Array<{
       id: number
@@ -242,11 +334,16 @@ declare global {
       required: boolean
       domainValues: string
     }>
-    isKit: boolean
+    isKit?: boolean
     kitItems?: Array<{
       itemId: string
       amount: number
     }>
+  }
+
+  interface Variation {
+    name: string
+    values: string[]
   }
 
   interface CompleteSpecification {
@@ -284,6 +381,7 @@ declare global {
   }
 
   interface SearchImage {
+    cacheId: string
     imageId: string
     imageLabel: string | null
     imageTag: string
@@ -297,18 +395,18 @@ declare global {
     TotalValuePlusInterestRate: number
     NumberOfInstallments: number
     PaymentSystemName: string
-    PaymentSystemGroupName: string
+    PaymentSystemGroupName?: string
     Name: string
   }
 
   interface CommertialOffer {
-    DeliverySlaSamplesPerRegion: Record<string, { DeliverySlaPerTypes: any[]; Region: any | null }>
+    DeliverySlaSamplesPerRegion?: Record<string, { DeliverySlaPerTypes: any[]; Region: any | null }>
     Installments: SearchInstallment[]
-    DiscountHighLight: any[]
-    GiftSkuIds: string[]
-    Teasers: Teaser[]
-    BuyTogether: any[]
-    ItemMetadataAttachment: any[]
+    discountHighlights?: any[]
+    GiftSkuIds?: string[]
+    teasers: Teaser[]
+    BuyTogether?: any[]
+    ItemMetadataAttachment?: any[]
     Price: number
     ListPrice: number
     spotPrice: number
@@ -318,11 +416,11 @@ declare global {
     PriceValidUntil: string
     AvailableQuantity: number
     Tax: number
-    DeliverySlaSamples: Array<{
+    DeliverySlaSamples?: Array<{
       DeliverySlaPerTypes: any[]
       Region: any | null
     }>
-    GetInfoErrorMessage: any | null
+    GetInfoErrorMessage?: any | null
     CacheVersionUsedToCallCheckout: string
   }
 
@@ -478,12 +576,6 @@ declare global {
     maximumNumberOfCharacters: number
     domain: string[]
   }
-
-  interface ElasticImage {
-    name: string
-    value: string
-  }
-
   interface ProductProperty {
     name: string
     originalName: string
@@ -491,9 +583,12 @@ declare global {
   }
 
   interface Teaser {
+    id?: string
     name: string
     conditions: TeaserCondition
     effects: TeaserEffects
+    featured?: boolean
+    teaserType?: string
   }
 
   interface TeaserCondition {
@@ -509,4 +604,6 @@ declare global {
     name: string
     value: string
   }
+
+  type IndexingType = 'API' | 'XML'
 }
