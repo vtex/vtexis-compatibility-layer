@@ -1,3 +1,5 @@
+import { getSpotPrice } from './utils'
+
 const mergeSellers = (sellerA: Seller, sellerB: Seller) => {
   sellerA.commertialOffer = {
     ...sellerA.commertialOffer,
@@ -8,6 +10,8 @@ const mergeSellers = (sellerA: Seller, sellerB: Seller) => {
   if (sellerA.commertialOffer.Price === 0) {
     sellerA.commertialOffer.AvailableQuantity = 0
   }
+
+  sellerA.commertialOffer.spotPrice = getSpotPrice(sellerA.commertialOffer.Price, sellerA.commertialOffer.Installments)
 
   return sellerA
 }

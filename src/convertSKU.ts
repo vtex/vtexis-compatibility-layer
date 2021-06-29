@@ -1,13 +1,7 @@
+import { getSpotPrice } from './utils'
+
 const getVariations = (sku: BiggySearchSKU): Variation[] => {
   return sku.attributes.map((attribute) => ({ name: attribute.key, values: [attribute.value] }))
-}
-
-const getSpotPrice = (sellingPrice: number, installments: SearchInstallment[]) => {
-  const spotPrice: number | undefined = installments.find(({ NumberOfInstallments, Value }: any) => {
-    return NumberOfInstallments === 1 && Value < sellingPrice
-  })?.Value
-
-  return spotPrice ?? sellingPrice
 }
 
 const buildCommertialOffer = (

@@ -34,3 +34,11 @@ export const getMaxAndMinForAttribute = (offers: CommertialOffer[], attribute: '
     { highPrice: 0, lowPrice: Infinity }
   )
 }
+
+export const getSpotPrice = (sellingPrice: number, installments: SearchInstallment[]) => {
+  const spotPrice: number | undefined = installments.find(({ NumberOfInstallments, Value }: any) => {
+    return NumberOfInstallments === 1 && Value < sellingPrice
+  })?.Value
+
+  return spotPrice ?? sellingPrice
+}
