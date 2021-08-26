@@ -1,4 +1,5 @@
 import { pathOr } from 'ramda'
+
 import convertSKU from './convertSKU'
 import { getMaxAndMinForAttribute, objToNameValue } from './utils'
 
