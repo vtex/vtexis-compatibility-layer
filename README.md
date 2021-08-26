@@ -1,6 +1,6 @@
 # vtexis-compatibility-layer
 
-Lib to convert the Intelliget Search object to the VTEX object.
+Lib to convert the Intelligent Search object to the VTEX object.
 
 ## Example
 
