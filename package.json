@@ -1,11 +1,13 @@
 {
-  "name": "vtexis-compatibility-layer",
-  "version": "1.1.3",
+  "name": "@vtex/vtexis-compatibility-layer",
+  "version": "0.1.0-beta.0",
   "description": "Compatibility layer between intelligent search and VTEX",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "yarn eslint ./src --cache --ext ts --config .eslintrc",
+    "test": "jest"
   },
   "keywords": [
     "vtex",
@@ -19,8 +21,15 @@
     "url": "https://github.com/vtex/vtexis-compatibility-layer"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
+    "@types/ramda": "^0.27.40",
     "@vtex/tsconfig": "^0.5.6",
+    "eslint": "^7.28.0",
+    "eslint-config-vtex": "^14.0.0",
+    "jest": "^27.0.4",
     "prettier": "^2.2.1",
+    "ts-jest": "^27.0.3",
     "typescript": "^4.2.4"
   },
   "dependencies": {

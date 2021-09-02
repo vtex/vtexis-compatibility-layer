@@ -1,6 +1,31 @@
 {
-    "extends": "vtex-react/io",
-    "rules": {
-      "react/jsx-filename-extension": 0
+  "extends": [
+    "vtex"
+  ],
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "_+"
+      }
+    ],
+    "max-params": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "rules": {
+        "no-dupe-class-members": "off"
+      }
     }
-  }
+  ]
+}

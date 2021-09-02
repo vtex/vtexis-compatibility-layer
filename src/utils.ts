@@ -10,31 +10,35 @@ export const objToNameValue = (
   if (!record) {
     return []
   }
+
   return Object.keys(record).reduce((acc, key) => {
     const value = record[key]
+
     if (typeof value === 'string') {
       acc.push({ [keyName]: key, [valueName]: value })
     }
+
     return acc
   }, [] as Array<Record<string, string>>)
 }
 
-export const getMaxAndMinForAttribute = (
-  offers: CommertialOffer[],
-  attribute: 'Price' | 'ListPrice'
-) => {
+export const getMaxAndMinForAttribute = (offers: CommertialOffer[], attribute: 'Price' | 'ListPrice') => {
   return offers.reduce(
     (acc, currentOffer) => {
-      const highPrice =
-        currentOffer[attribute] > acc.highPrice
-          ? currentOffer[attribute]
-          : acc.highPrice
+      const highPrice = currentOffer[attribute] > acc.highPrice ? currentOffer[attribute] : acc.highPrice
       const lowPrice =
-        currentOffer[attribute] < acc.lowPrice && currentOffer[attribute] > 0
-          ? currentOffer[attribute]
-          : acc.lowPrice
+        currentOffer[attribute] < acc.lowPrice && currentOffer[attribute] > 0 ? currentOffer[attribute] : acc.lowPrice
+
       return { highPrice, lowPrice }
     },
     { highPrice: 0, lowPrice: Infinity }
   )
+}
+
+export const getSpotPrice = (sellingPrice: number, installments: SearchInstallment[]) => {
+  const spotPrice: number | undefined = installments.find(({ NumberOfInstallments, Value }: any) => {
+    return NumberOfInstallments === 1 && Value < sellingPrice
+  })?.Value
+
+  return spotPrice ?? sellingPrice
 }

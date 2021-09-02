@@ -6,3 +6,4 @@ Icon
 
 node_modules/
 lib/
+.eslintcache
