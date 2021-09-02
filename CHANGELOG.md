@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
  
+ ## [0.1.0] - 2021-09-02
+
 ### Added
 - lint.
 - main test cases.
