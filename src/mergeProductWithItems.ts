@@ -27,18 +27,44 @@ const getDefaultSeller = (sellers: Seller[]) => {
     .map((seller) => seller.sellerId)[0]
 }
 
-export const mergeProductWithItems = (product: SearchProduct, items: SearchItem[]) => {
+export const mergeProductWithItems = (
+  product: SearchProduct,
+  items: SearchItem[],
+  simulationBehavior: 'default' | 'only1P'
+) => {
   const mergedProduct = { ...product }
 
-  mergedProduct.items.forEach((item: any, itemIndex: any) => {
+  mergedProduct.items.forEach((item: SearchItem, itemIndex) => {
     const simulationItem = items[itemIndex]
-    const defaultSeller = getDefaultSeller(simulationItem.sellers)
 
-    item.sellers = item.sellers.map((seller: any, simulationIndex: any) => {
-      const sellerSimulation = simulationItem.sellers[simulationIndex]
+    if (simulationBehavior === 'default') {
+      const defaultSeller = getDefaultSeller(simulationItem.sellers)
 
-      return mergeSellers(seller, sellerSimulation, defaultSeller)
-    })
+      item.sellers = item.sellers.map((seller: any, simulationIndex: any) => {
+        const sellerSimulation = simulationItem.sellers[simulationIndex]
+
+        return mergeSellers(seller, sellerSimulation, defaultSeller)
+      })
+    } else {
+      const seller1PIndex = item.sellers.findIndex((seller) => seller.sellerId === '1')
+      const sellers = Array.from(item.sellers)
+
+      sellers[seller1PIndex] = simulationItem.sellers[0]
+      const sellerDefault = getDefaultSeller(sellers)
+
+      item.sellers = item.sellers.map((seller) => {
+        if (seller.sellerId !== '1') {
+          return !sellerDefault
+            ? seller
+            : {
+                ...seller,
+                sellerDefault: seller.sellerId === sellerDefault,
+              }
+        }
+
+        return mergeSellers(seller, simulationItem.sellers[0], sellerDefault)
+      })
+    }
   })
 
   return mergedProduct

@@ -4,7 +4,7 @@ import { vtexProductMock } from './mock/vtexProduct'
 
 describe('mergeProductWithItems', () => {
   it('should be able to merge the results from the itemsWithSimulation query', () => {
-    const mergedProduct = mergeProductWithItems(vtexProductMock, itemsWithSimulationResponseMock)
+    const mergedProduct = mergeProductWithItems(vtexProductMock, itemsWithSimulationResponseMock, 'default')
 
     const [mergedItem] = mergedProduct.items
     const [mergedSeller] = mergedItem.sellers
@@ -14,7 +14,7 @@ describe('mergeProductWithItems', () => {
   })
 
   it('should merge sellers with price zero as unavailable', () => {
-    const mergedProduct = mergeProductWithItems(vtexProductMock, itemsWithSimulationResponseMock)
+    const mergedProduct = mergeProductWithItems(vtexProductMock, itemsWithSimulationResponseMock, 'default')
 
     const [, mergedItem] = mergedProduct.items
     const [mergedSeller] = mergedItem.sellers
