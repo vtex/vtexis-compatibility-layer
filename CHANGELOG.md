@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
 
+## [0.2.1] - 2021-09-09
+
+### Fixed
+- Use the `getFirstNonNullable` to select the correct price
+
+ ## [0.2.0] - 2021-09-09
 ### Added
 -  `only1p` as a `simulationBehavior` option
  

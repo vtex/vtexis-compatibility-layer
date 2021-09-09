@@ -1,4 +1,4 @@
-import { getSpotPrice } from './utils'
+import { getFirstNonNullable, getSpotPrice } from './utils'
 
 const getVariations = (sku: BiggySearchSKU): Variation[] => {
   return sku.attributes.map((attribute) => ({ name: attribute.key, values: [attribute.value] }))
@@ -60,11 +60,11 @@ const getSellersIndexedByApi = (product: BiggySearchProduct, sku: BiggySearchSKU
 
   return biggySellers.map(
     (seller: BiggySeller): Seller => {
-      const price = seller.price ?? sku.price ?? product.price
-      const oldPrice = seller.oldPrice ?? sku.oldPrice ?? product.oldPrice
+      const price = getFirstNonNullable<number | undefined>([seller.price, sku.price, product.price]) ?? 0
+      const oldPrice = getFirstNonNullable<number | undefined>([seller.oldPrice, sku.oldPrice, product.oldPrice]) ?? 0
       const installment = seller.installment ?? product.installment
 
-      const stock = seller.stock ?? sku.stock ?? product.stock
+      const stock = getFirstNonNullable<number | undefined>([seller.stock, sku.stock, product.stock]) ?? 0
       const teasers = seller.teasers ?? []
 
       const commertialOffer = buildCommertialOffer(price, oldPrice, stock, teasers, installment, seller.tax)

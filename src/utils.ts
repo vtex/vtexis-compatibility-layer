@@ -42,3 +42,7 @@ export const getSpotPrice = (sellingPrice: number, installments: SearchInstallme
 
   return spotPrice ?? sellingPrice
 }
+
+export const getFirstNonNullable = <T>(arr: T[]): T | undefined => {
+  return arr.find((el) => el !== null && typeof el !== 'undefined')
+}
