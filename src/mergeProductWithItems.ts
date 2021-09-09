@@ -23,7 +23,7 @@ const getDefaultSeller = (sellers: Seller[]) => {
   const sellersWithStock = sellers.filter((seller) => seller.commertialOffer.AvailableQuantity !== 0)
 
   return sellersWithStock
-    ?.sort((a, b) => a.commertialOffer.Price - b.commertialOffer.Price)
+    ?.sort((a, b) => a.commertialOffer.spotPrice - b.commertialOffer.spotPrice)
     .map((seller) => seller.sellerId)[0]
 }
 
