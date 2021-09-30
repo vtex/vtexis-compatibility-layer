@@ -1,7 +1,20 @@
 import { getFirstNonNullable, getSpotPrice } from './utils'
 
-const getVariations = (sku: BiggySearchSKU): Variation[] => {
-  return sku.attributes.map((attribute) => ({ name: attribute.key, values: [attribute.value] }))
+const getVariations = (sku: BiggySearchSKU, product: BiggySearchProduct): Variation[] => {
+  return sku.attributes.map((attribute) => {
+    const translatedAttribute = product.textAttributes.find(({ joinedKey, joinedValue }) => {
+      return joinedKey.split('@@@')[2] === attribute.key && joinedValue.split('@@@')[1] === attribute.value
+    })
+
+    if (!translatedAttribute) {
+      return { name: attribute.key, values: [attribute.value] }
+    }
+
+    return {
+      name: translatedAttribute.labelKey,
+      values: [translatedAttribute.labelValue],
+    }
+  })
 }
 
 const buildCommertialOffer = (
@@ -140,7 +153,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
   const sellers =
     indexingType === 'XML' ? getSellersIndexedByXML(product) : getSellersIndexedByApi(product, sku, tradePolicy)
 
-  const variations = getVariations(sku)
+  const variations = getVariations(sku, product)
 
   const item: SearchItem & { [key: string]: any } = {
     sellers,
@@ -166,9 +179,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
   }
 
   variations.forEach((variation) => {
-    const attribute = sku.attributes.find((currentAttribute) => currentAttribute.key === variation.name)
-
-    item[variation.name] = attribute != null ? [attribute.value] : []
+    item[variation.name] = variation.values ?? []
   })
 
   return item
