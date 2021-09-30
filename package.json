@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "watch": "tsc -w",
     "build": "tsc",
     "lint": "yarn eslint ./src --cache --ext ts --config .eslintrc",
     "test": "jest"
