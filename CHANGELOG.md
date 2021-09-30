@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
 
+## [0.2.2] - 2021-09-30
 ### Fixed
 - `variations` translation
 
