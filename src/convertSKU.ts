@@ -1,4 +1,4 @@
-import { getFirstNonNullable, getSpotPrice } from './utils'
+import { getFirstNonNullable } from './utils'
 
 const getVariations = (sku: BiggySearchSKU, product: BiggySearchProduct): Variation[] => {
   return sku.attributes.map((attribute) => {
@@ -20,6 +20,7 @@ const getVariations = (sku: BiggySearchSKU, product: BiggySearchProduct): Variat
 const buildCommertialOffer = (
   price: number,
   oldPrice: number,
+  spotPrice: number,
   stock: number,
   teasers: Teaser[],
   installment?: BiggyInstallment,
@@ -49,7 +50,7 @@ const buildCommertialOffer = (
     Installments: installments,
     Price: price,
     ListPrice: oldPrice,
-    spotPrice: getSpotPrice(price, installments),
+    spotPrice,
     taxPercentage: (tax ?? 0) / price,
     PriceWithoutDiscount: oldPrice,
     Tax: tax ?? 0,
@@ -75,12 +76,15 @@ const getSellersIndexedByApi = (product: BiggySearchProduct, sku: BiggySearchSKU
     (seller: BiggySeller): Seller => {
       const price = getFirstNonNullable<number | undefined>([seller.price, sku.price, product.price]) ?? 0
       const oldPrice = getFirstNonNullable<number | undefined>([seller.oldPrice, sku.oldPrice, product.oldPrice]) ?? 0
+      const spotPrice =
+        getFirstNonNullable<number | undefined>([seller.spotPrice, sku.spotPrice, product.spotPrice]) ?? price
+
       const installment = seller.installment ?? product.installment
 
       const stock = getFirstNonNullable<number | undefined>([seller.stock, sku.stock, product.stock]) ?? 0
       const teasers = seller.teasers ?? []
 
-      const commertialOffer = buildCommertialOffer(price, oldPrice, stock, teasers, installment, seller.tax)
+      const commertialOffer = buildCommertialOffer(price, oldPrice, spotPrice, stock, teasers, installment, seller.tax)
 
       return {
         sellerId: seller.id,
@@ -95,8 +99,9 @@ const getSellersIndexedByApi = (product: BiggySearchProduct, sku: BiggySearchSKU
 
 const getSellersIndexedByXML = (product: BiggySearchProduct): Seller[] => {
   const { price, oldPrice, installment, stock } = product
+  const spotPrice = product.spotPrice ?? price
 
-  const commertialOffer = buildCommertialOffer(price, oldPrice, stock, [], installment, product.tax)
+  const commertialOffer = buildCommertialOffer(price, oldPrice, spotPrice, stock, [], installment, product.tax)
 
   return [
     {

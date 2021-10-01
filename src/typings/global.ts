@@ -13,6 +13,7 @@ declare global {
     link: string
     oldPrice: number
     price: number
+    spotPrice?: number
     stock: number
     brand: string
     brandId: string
@@ -49,6 +50,7 @@ declare global {
     extraInfo: BiggyExtraInfo
     oldPriceText: string
     priceText: string
+    spotPriceText?: string
   }
 
   interface BiggyExtraInfo {
@@ -109,6 +111,8 @@ declare global {
     oldPriceText?: string
     price?: number
     priceText?: string
+    spotPrice?: number
+    spotPriceText?: string
     measurementUnit?: string
     unitMultiplier?: number
     link?: string
@@ -163,6 +167,7 @@ declare global {
     name: string
     oldPrice?: number
     price?: number
+    spotPrice?: number
     stock?: number
     tax: number
     default: boolean

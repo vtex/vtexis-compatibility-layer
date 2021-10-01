@@ -35,14 +35,6 @@ export const getMaxAndMinForAttribute = (offers: CommertialOffer[], attribute: '
   )
 }
 
-export const getSpotPrice = (sellingPrice: number, installments: SearchInstallment[]) => {
-  const spotPrice: number | undefined = installments.find(({ NumberOfInstallments, Value }: any) => {
-    return NumberOfInstallments === 1 && Value < sellingPrice
-  })?.Value
-
-  return spotPrice ?? sellingPrice
-}
-
 export const getFirstNonNullable = <T>(arr: T[]): T | undefined => {
   return arr.find((el) => el !== null && typeof el !== 'undefined')
 }
