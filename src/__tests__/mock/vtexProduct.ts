@@ -426,7 +426,7 @@ export const vtexProductMock: SearchProduct = {
             ListPrice: 1000.5,
             Tax: 0,
             taxPercentage: 0,
-            spotPrice: 600.3,
+            spotPrice: 500.3,
             PriceWithoutDiscount: 1000.5,
             RewardValue: 0,
             PriceValidUntil: '2022-06-16T19:20:58Z',
