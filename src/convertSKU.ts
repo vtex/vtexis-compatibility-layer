@@ -76,6 +76,7 @@ const getSellersIndexedByApi = (product: BiggySearchProduct, sku: BiggySearchSKU
     (seller: BiggySeller): Seller => {
       const price = getFirstNonNullable<number | undefined>([seller.price, sku.price, product.price]) ?? 0
       const oldPrice = getFirstNonNullable<number | undefined>([seller.oldPrice, sku.oldPrice, product.oldPrice]) ?? 0
+      // if spot price does not exist, it means that there is no spot price promotion, aka spotPrice == price
       const spotPrice =
         getFirstNonNullable<number | undefined>([seller.spotPrice, sku.spotPrice, product.spotPrice]) ?? price
 
@@ -99,6 +100,7 @@ const getSellersIndexedByApi = (product: BiggySearchProduct, sku: BiggySearchSKU
 
 const getSellersIndexedByXML = (product: BiggySearchProduct): Seller[] => {
   const { price, oldPrice, installment, stock } = product
+  // if spot price does not exist, it means that there is no spot price promotion, aka spotPrice == price
   const spotPrice = product.spotPrice ?? price
 
   const commertialOffer = buildCommertialOffer(price, oldPrice, spotPrice, stock, [], installment, product.tax)
