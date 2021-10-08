@@ -285,6 +285,8 @@ export const biggyProductMock: BiggySearchProduct = {
       ],
       oldPriceText: '$1,000.50',
       priceText: '$600.30',
+      spotPrice: 500.3,
+      spotPriceText: '$500.30',
     },
   ],
   link: 'tank-top',
