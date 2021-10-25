@@ -168,7 +168,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
   } = {
     categories,
     categoriesIds,
-    productId: product.id,
+    productId: product.product,
     cacheId: `sp-${product.id}`,
     productName: product.name,
     productReference: product.reference,

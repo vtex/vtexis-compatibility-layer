@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
 
+### Fixed
+- `productId`
+
 ## [0.2.3] - 2021-19-08
 ### Changed
 - `spotPrice` calculation
