@@ -123,7 +123,7 @@ const elasticImageToSearchImage = (image: BiggyProductImage, imageId: string): S
     imageTag: '',
     imageLabel: image.name ?? '',
     imageText: image.name ?? '',
-    imageUrl: image.value,
+    imageUrl: image.value.replace('http://', 'https://'),
   }
 }
 

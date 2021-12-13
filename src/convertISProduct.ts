@@ -10,23 +10,25 @@ const getSpecificationGroups = (
 ) => {
   const allSpecificationsGroups = (product.allSpecificationsGroups ?? []).concat(['allSpecifications'])
 
-  return allSpecificationsGroups.map((groupName: string) => {
-    const groupSpecifications = ((product as unknown) as DynamicKey<string[]>)?.[groupName] ?? []
+  return allSpecificationsGroups
+    .map((groupName: string) => {
+      const groupSpecifications = ((product as unknown) as DynamicKey<string[]>)?.[groupName] ?? []
 
-    return {
-      originalName: groupName,
-      name: groupName,
-      specifications: groupSpecifications.map((name) => {
-        const values = ((product as unknown) as DynamicKey<string[]>)[name] ?? []
+      return {
+        originalName: groupName,
+        name: groupName,
+        specifications: groupSpecifications.map((name) => {
+          const values = ((product as unknown) as DynamicKey<string[]>)[name] ?? []
 
-        return {
-          originalName: name,
-          name,
-          values,
-        }
-      }),
-    }
-  })
+          return {
+            originalName: name,
+            name,
+            values,
+          }
+        }),
+      }
+    })
+    .filter((group) => group.specifications.length > 0)
 }
 
 const getProperties = (
