@@ -64,10 +64,18 @@ const getPriceRange = (searchItems: SearchItem[]) => {
 export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: string, indexingType?: IndexingType) => {
   const categories: string[] = []
   const categoriesIds: string[] = []
+  const categoryTree: Category[] = []
 
-  product.categoryTrees?.forEach((categoryTree) => {
-    categories.push(`/${categoryTree.categoryNames.join('/')}/`)
-    categoriesIds.push(`/${categoryTree.categoryIds.join('/')}/`)
+  product.categoryTrees?.forEach((category) => {
+    const { categoryIds, categoryNames } = category
+
+    categories.push(`/${categoryNames.join('/')}/`)
+    categoriesIds.push(`/${categoryIds.join('/')}/`)
+    categoryTree.push({
+      id: Number(categoryIds[categoryIds.length - 1]),
+      name: categoryNames[categoryNames.length - 1],
+      href: '',
+    })
   })
 
   const skus: SearchItem[] = (product.skus ?? []).map(convertSKU(product, indexingType, tradePolicy))
@@ -192,15 +200,12 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     Specifications: [],
     allSpecificationsGroups,
     specificationGroups,
-    itemMetadata: {
-      items: [],
-    },
     selectedProperties,
     skuSpecifications: allSkuSpecification,
     // This field is only maintained for backwards compatibility reasons, it shouldn't exist.
     skus: skus.find((sku) => sku.sellers && sku.sellers.length > 0),
     properties: [],
-    categoryTree: [],
+    categoryTree,
   }
 
   if (product.extraData) {

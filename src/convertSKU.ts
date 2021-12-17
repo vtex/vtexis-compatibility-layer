@@ -180,7 +180,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
     variations,
     ean: sku.ean ?? '',
     modalType: '',
-    Videos: sku.videos ?? [],
+    videos: sku.videos ?? [],
     attachments: [],
     isKit: false,
   }
