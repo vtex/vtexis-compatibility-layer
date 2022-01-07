@@ -116,6 +116,8 @@ const getSellersIndexedByXML = (product: BiggySearchProduct): Seller[] => {
   ]
 }
 
+const toVtexAssets = (image: string) => image.replace('vteximg.com.br', 'vtexassets.com').replace('http://', 'https://')
+
 const elasticImageToSearchImage = (image: BiggyProductImage, imageId: string): SearchImage => {
   return {
     imageId,
@@ -123,7 +125,7 @@ const elasticImageToSearchImage = (image: BiggyProductImage, imageId: string): S
     imageTag: '',
     imageLabel: image.name ?? '',
     imageText: image.name ?? '',
-    imageUrl: image.value,
+    imageUrl: toVtexAssets(image.value),
   }
 }
 
@@ -180,7 +182,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
     variations,
     ean: sku.ean ?? '',
     modalType: '',
-    Videos: sku.videos ?? [],
+    videos: sku.videos ?? [],
     attachments: [],
     isKit: false,
   }

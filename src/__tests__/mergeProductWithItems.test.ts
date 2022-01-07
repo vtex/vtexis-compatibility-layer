@@ -14,6 +14,7 @@ describe('mergeProductWithItems', () => {
   })
 
   it('should merge sellers with price zero as unavailable', () => {
+    itemsWithSimulationResponseMock[1].sellers[0].commertialOffer.Price = 0
     const mergedProduct = mergeProductWithItems(vtexProductMock, itemsWithSimulationResponseMock, 'default')
 
     const [, mergedItem] = mergedProduct.items
