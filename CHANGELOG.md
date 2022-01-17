@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
 
+### Fixed
+- Fix a few fields to allow the `intelligent-search-api` migration.
+
 ## [0.2.5] - 2021-10-25
 ### Fixed
 - `productId`
