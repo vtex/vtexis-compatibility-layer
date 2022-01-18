@@ -5,8 +5,8 @@ export const vtexProductMock: SearchProduct = {
   productName: 'Tank',
   productReference: 'xpto123',
   linkText: 'tank-top',
-  brand: 'AOC',
-  brandId: 2000012,
+  brand: 'New Offers!!',
+  brandId: 2000045,
   link: 'https://portal.vtexcommercestable.com.br/tank-top/p',
   categories: ['/Apparel & Accessories/Clothing/Tops/', '/Apparel & Accessories/Clothing/', '/Apparel & Accessories/'],
   categoryId: '48',
@@ -24,7 +24,13 @@ export const vtexProductMock: SearchProduct = {
     {
       name: 'Specifications',
       originalName: 'Specifications',
-      specifications: [],
+      specifications: [
+        {
+          name: 'Sleeve type',
+          originalName: 'Sleeve type',
+          values: ['Sleeveless'],
+        },
+      ],
     },
     {
       name: 'allSpecifications',
@@ -65,17 +71,30 @@ export const vtexProductMock: SearchProduct = {
       id: '1969',
       name: 'teste Ultimo SKU',
     },
+    {
+      id: '1970',
+      name: 'Summer',
+    },
   ],
   clusterHighlights: [
     {
       id: '1182',
       name: 'Top Seller',
     },
+    {
+      id: '1970',
+      name: 'Summer',
+    },
   ],
   properties: [
     {
-      name: 'Sleeve type',
+      originalName: 'On Sale',
+      name: 'On Sale',
+      values: ['True'],
+    },
+    {
       originalName: 'Sleeve type',
+      name: 'Sleeve type',
       values: ['Sleeveless'],
     },
   ],
@@ -85,17 +104,17 @@ export const vtexProductMock: SearchProduct = {
     {
       id: 25,
       name: 'Apparel & Accessories',
-      href: '/apparel---accessories',
+      href: '/apparel-accessories',
     },
     {
       id: 47,
       name: 'Clothing',
-      href: '/apparel---accessories/clothing',
+      href: '/apparel-accessories/clothing',
     },
     {
       id: 48,
       name: 'Tops',
-      href: '/apparel---accessories/clothing/tops',
+      href: '/apparel-accessories/clothing/tops',
     },
   ],
   items: [
@@ -125,13 +144,12 @@ export const vtexProductMock: SearchProduct = {
           imageText: 'Frame-1',
         },
       ],
-      videos: [],
       sellers: [
         {
           sellerId: '1',
           sellerName: 'VTEX',
           addToCartLink:
-            'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=3&qty=1&seller=1&sc=1&price=37577&cv=AB2216813FC43FF2AA9D443499C8FD3C_&sc=1',
+            'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=3&qty=1&seller=1&sc=1&price=37577&cv=7BC1384A9AE1193BA0E88BF2E10E208A_&sc=1',
           sellerDefault: true,
           commertialOffer: {
             discountHighlights: [],
@@ -164,9 +182,9 @@ export const vtexProductMock: SearchProduct = {
             spotPrice: 375.77,
             PriceWithoutDiscount: 375.77,
             RewardValue: 0,
-            PriceValidUntil: '2022-06-16T19:20:58Z',
+            PriceValidUntil: '2023-01-07T16:02:14Z',
             AvailableQuantity: 3000000,
-            CacheVersionUsedToCallCheckout: 'AB2216813FC43FF2AA9D443499C8FD3C_',
+            CacheVersionUsedToCallCheckout: '7BC1384A9AE1193BA0E88BF2E10E208A_',
             Installments: [
               {
                 Value: 375.77,
@@ -390,13 +408,12 @@ export const vtexProductMock: SearchProduct = {
           imageText: 'Frame-2',
         },
       ],
-      videos: [],
       sellers: [
         {
           sellerId: '1',
           sellerName: 'VTEX',
           addToCartLink:
-            'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=4&qty=1&seller=1&sc=1&price=60030&cv=AB2216813FC43FF2AA9D443499C8FD3C_&sc=1',
+            'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=4&qty=1&seller=1&sc=1&price=60030&cv=7BC1384A9AE1193BA0E88BF2E10E208A_&sc=1',
           sellerDefault: true,
           commertialOffer: {
             discountHighlights: [],
@@ -426,12 +443,12 @@ export const vtexProductMock: SearchProduct = {
             ListPrice: 1000.5,
             Tax: 0,
             taxPercentage: 0,
-            spotPrice: 500.3,
+            spotPrice: 600.3,
             PriceWithoutDiscount: 1000.5,
             RewardValue: 0,
-            PriceValidUntil: '2022-06-16T19:20:58Z',
+            PriceValidUntil: '2023-01-07T16:02:14Z',
             AvailableQuantity: 3000000,
-            CacheVersionUsedToCallCheckout: 'AB2216813FC43FF2AA9D443499C8FD3C_',
+            CacheVersionUsedToCallCheckout: '7BC1384A9AE1193BA0E88BF2E10E208A_',
             Installments: [
               {
                 Value: 600.3,
