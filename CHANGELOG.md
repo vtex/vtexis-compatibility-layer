@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
 
+### Added
+- Add rule to the product field.
+
 ## [1.0.0] - 2021-10-25
 ### Fixed
 - Fix a few fields to allow the `intelligent-search-api` migration.

@@ -51,6 +51,11 @@ declare global {
     oldPriceText: string
     priceText: string
     spotPriceText?: string
+    rule?: Rule
+  }
+
+  type Rule = {
+    id: string
   }
 
   interface BiggyExtraInfo {

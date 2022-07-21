@@ -218,6 +218,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     skuSpecifications: allSkuSpecification,
     properties: [],
     categoryTree,
+    rule: product.rule,
   }
 
   if (product.extraData) {
