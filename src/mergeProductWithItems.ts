@@ -1,4 +1,8 @@
 const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string) => {
+  if (sellerB.error) {
+    return sellerA
+  }
+
   sellerA.commertialOffer = {
     ...sellerA.commertialOffer,
     ...sellerB.commertialOffer,
