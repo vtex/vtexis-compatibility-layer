@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Add rule to the product field.
+- Forwards `release` field as `releaseDate`
 
 ## [1.0.0] - 2021-10-25
 ### Fixed

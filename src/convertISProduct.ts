@@ -219,6 +219,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     properties: [],
     categoryTree,
     rule: product.rule,
+    releaseDate: product.release,
   }
 
   if (product.extraData) {
