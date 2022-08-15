@@ -1,6 +1,6 @@
 {
   "name": "@vtex/vtexis-compatibility-layer",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Compatibility layer between intelligent search and VTEX",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,6 +15,9 @@
     "intelligent",
     "search",
     "is"
+  ],
+  "files": [
+    "lib"
   ],
   "license": "MIT",
   "repository": {
