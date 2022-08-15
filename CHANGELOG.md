@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
+
+## [1.2.3] - 2021-15-25
+
 ### Added
 - Add "files" field to `package.json` to allow `yarn publish`
 
