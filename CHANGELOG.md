@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
 
+## [1.2.4] - 2022-09-22
+
+### Changed
+- Skip merge when there is an error on simulation.
+
 ## [1.2.3] - 2021-15-25
 
 ### Added
