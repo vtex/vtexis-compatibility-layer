@@ -440,6 +440,7 @@ declare global {
     addToCartLink: string
     sellerDefault: boolean
     commertialOffer: CommertialOffer
+    error?: string
   }
 
   interface SearchFacet {
