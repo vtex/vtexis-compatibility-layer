@@ -8,6 +8,7 @@ const getSpecificationGroups = (
     [key: string]: any
   }
 ) => {
+
   const allSpecificationsGroups = (product.allSpecificationsGroups ?? []).concat(['allSpecifications'])
 
   const visibleSpecifications = product.completeSpecifications
@@ -16,7 +17,8 @@ const getSpecificationGroups = (
 
         return acc
       }, {})
-    : null
+  
+      : null
 
   return allSpecificationsGroups.map((groupName: string) => {
     let groupSpecifications = ((product as unknown) as DynamicKey<string[]>)?.[groupName] ?? []
@@ -28,11 +30,13 @@ const getSpecificationGroups = (
 
       return true
     })
+    let groupSpecificationsUnique = [...new Set(groupSpecifications)]
 
     return {
       originalName: groupName,
       name: groupName,
-      specifications: groupSpecifications.map((name) => {
+      specifications: groupSpecificationsUnique.map((name) => {
+
         const values = ((product as unknown) as DynamicKey<string[]>)[name] ?? []
 
         return {
@@ -111,7 +115,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
 
   const allSpecifications = (product.productSpecifications ?? []).concat(
     specificationAttributes.map((specification) => specification.labelKey)
-  )
+  ) 
 
   const specificationsByKey = specificationAttributes.reduce(
     (specsByKey: { [key: string]: BiggyTextAttribute[] }, spec) => {
