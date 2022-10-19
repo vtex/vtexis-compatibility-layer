@@ -110,7 +110,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
   const specificationAttributes = product.textAttributes?.filter((attribute) => attribute.isSku) ?? []
 
   const allSpecifications = (product.productSpecifications ?? []).concat(
-    specificationAttributes.map((specification) => specification.labelKey)
+    Array.from(new Set(specificationAttributes.map((specification) => specification.labelKey)))
   )
 
   const specificationsByKey = specificationAttributes.reduce(
