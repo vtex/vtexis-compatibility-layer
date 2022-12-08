@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.4] - 2022-09-22
 
+### Fixed
+- Duplicated specifications in `allSpecifications` group.
+
 ### Changed
 - Skip merge when there is an error on simulation.
 
