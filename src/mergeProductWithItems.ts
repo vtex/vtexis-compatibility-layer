@@ -6,6 +6,10 @@ const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string) 
   sellerA.commertialOffer = {
     ...sellerA.commertialOffer,
     ...sellerB.commertialOffer,
+    // This line is important because there are old versions of the vtex.store-graphl that returns the Tax as undefined
+    // The versions are 2.158.1-hkignore.0, 2.158.0, 2.157.1 and 2.147.5-hkignore.0
+    // When those versions are not receiving requests anymore, than it is safe to delete this line
+    Tax: sellerB.commertialOffer.Tax ?? sellerA.commertialOffer.Tax,
   }
 
   // Deal with withoutPriceFulfillment cases
