@@ -230,7 +230,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
   if (product.extraData) {
     product.extraData.forEach(({ key, value }: BiggyProductExtraData) => {
       convertedProduct.allSpecifications?.push(key)
-      convertedProduct[key] = [value]
+      convertedProduct[key] = { labelKey: key, values: [value] }
     })
   }
 

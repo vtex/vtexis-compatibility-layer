@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.7] - 2022-12-14
+
+### Fixed
+
+- `extraData` is not being converted properly.
+
+## [1.2.6] - 2022-12-14
+
 ### Fixed
 
 - Use `labelKey` instead of `originalKey` when converting specifications.
