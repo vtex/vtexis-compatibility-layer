@@ -33,11 +33,12 @@ const getSpecificationGroups = (
       originalName: groupName,
       name: groupName,
       specifications: groupSpecifications.map((name) => {
-        const values = ((product as unknown) as DynamicKey<string[]>)[name] ?? []
+        const { values, labelKey } =
+          ((product as unknown) as DynamicKey<{ values: string[]; labelKey: string }>)[name] ?? []
 
         return {
           originalName: name,
-          name,
+          name: labelKey,
           values,
         }
       }),
@@ -51,9 +52,13 @@ const getProperties = (
   }
 ) =>
   (product.allSpecifications ?? []).map((name: string) => {
-    const value = product[name]
+    const { labelKey, values } = product[name]
 
-    return { name, originalName: name, values: value }
+    return {
+      name: labelKey,
+      originalName: name,
+      values,
+    }
   })
 
 const isSellerAvailable = (seller: Seller) => pathOr(0, ['commertialOffer', 'AvailableQuantity'], seller) > 0
@@ -231,14 +236,19 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
 
   if (product.textAttributes) {
     allSpecifications.forEach((specification) => {
-      if (!convertedProduct[specification]) {
-        const attributes = product.textAttributes.filter(
-          (attribute) => attribute.joinedKey.split('@@@')[4] === specification
-        )
+      if (convertedProduct[specification]) {
+        return
+      }
 
-        convertedProduct[specification] = attributes.map((attribute) => {
-          return attribute.labelValue
-        })
+      const attributes = product.textAttributes.filter(
+        (attribute) => attribute.joinedKey.split('@@@')[4] === specification
+      )
+
+      const labelKey = attributes[0]?.labelKey ?? specification
+
+      convertedProduct[specification] = {
+        labelKey,
+        values: attributes.map(({ labelValue }) => labelValue),
       }
     })
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Use `labelKey` instead of `originalKey` when converting specifications.
+
 ## [1.2.5] - 2022-12-08
 
 ### Fixed
