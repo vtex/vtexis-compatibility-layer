@@ -21,8 +21,9 @@ const getSpecificationGroups = (
   return allSpecificationsGroups.map((groupName: string) => {
     const groupSpecificationsUnknown = ((product as unknown) as DynamicKey<any>)?.[groupName]
 
-    const groupSpecifications: string[] =
-      (groupName === 'allSpecifications' ? groupSpecificationsUnknown : groupSpecificationsUnknown.values) ?? []
+    const groupSpecifications: string[] = Array.isArray(groupSpecificationsUnknown)
+      ? groupSpecificationsUnknown
+      : groupSpecificationsUnknown.values
 
     const specificationValues = groupSpecifications.filter((specificationName) => {
       if (visibleSpecifications?.[specificationName] != null) {
