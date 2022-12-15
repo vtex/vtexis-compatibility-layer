@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- The `converISProduct` throws an error due to an inconsistency in the specifications format.
+
 ## [1.2.7] - 2022-12-14
 
 ### Fixed

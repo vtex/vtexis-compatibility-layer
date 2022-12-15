@@ -19,9 +19,12 @@ const getSpecificationGroups = (
     : null
 
   return allSpecificationsGroups.map((groupName: string) => {
-    let groupSpecifications = ((product as unknown) as DynamicKey<string[]>)?.[groupName] ?? []
+    const groupSpecificationsUnknown = ((product as unknown) as DynamicKey<any>)?.[groupName]
 
-    groupSpecifications = groupSpecifications.filter((specificationName) => {
+    const groupSpecifications: string[] =
+      (groupName === 'allSpecifications' ? groupSpecificationsUnknown : groupSpecificationsUnknown.values) ?? []
+
+    const specificationValues = groupSpecifications.filter((specificationName) => {
       if (visibleSpecifications?.[specificationName] != null) {
         return visibleSpecifications[specificationName]
       }
@@ -32,7 +35,7 @@ const getSpecificationGroups = (
     return {
       originalName: groupName,
       name: groupName,
-      specifications: groupSpecifications.map((name) => {
+      specifications: specificationValues.map((name) => {
         const { values, labelKey } =
           ((product as unknown) as DynamicKey<{ values: string[]; labelKey: string }>)[name] ?? []
 
@@ -262,8 +265,10 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
   }
 
   allSpecificationsGroups.forEach((specificationGroup) => {
-    convertedProduct[specificationGroup] =
-      convertedProduct[specificationGroup] ?? specificationGroups[specificationGroup]
+    convertedProduct[specificationGroup] = convertedProduct[specificationGroup] ?? {
+      labelKey: specificationGroup,
+      values: specificationGroups[specificationGroup],
+    }
   })
 
   convertedProduct.properties = getProperties(convertedProduct)
