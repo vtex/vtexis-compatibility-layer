@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Bug where the specifications were converted to an empty array.
+
+## [1.2.11] - 2022-12-14
+
+### Fixed
+
 - The `converISProduct` throws an error due to an inconsistency in the specifications format.
 
 ## [1.2.7] - 2022-12-14
