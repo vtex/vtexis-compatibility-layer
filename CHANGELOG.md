@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.12] - 2022-12-20
+
 ### Fixed
 
 - Bug where the specifications were converted to an empty array.
