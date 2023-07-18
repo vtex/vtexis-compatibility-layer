@@ -1,3 +1,5 @@
+import { pathOr } from 'ramda'
+
 export function distinct<T>(value: T, index: number, self: T[]) {
   return self.indexOf(value) === index
 }
@@ -22,7 +24,7 @@ export const objToNameValue = (
   }, [] as Array<Record<string, string>>)
 }
 
-export const getMaxAndMinForAttribute = (offers: CommertialOffer[], attribute: 'Price' | 'ListPrice') => {
+const getMaxAndMinForAttribute = (offers: CommertialOffer[], attribute: 'Price' | 'ListPrice') => {
   return offers.reduce(
     (acc, currentOffer) => {
       const highPrice = currentOffer[attribute] > acc.highPrice ? currentOffer[attribute] : acc.highPrice
@@ -37,4 +39,23 @@ export const getMaxAndMinForAttribute = (offers: CommertialOffer[], attribute: '
 
 export const getFirstNonNullable = <T>(arr: T[]): T | undefined => {
   return arr.find((el) => el !== null && typeof el !== 'undefined')
+}
+
+const isSellerAvailable = (seller: Seller) => pathOr(0, ['commertialOffer', 'AvailableQuantity'], seller) > 0
+
+export const getPriceRange = (searchItems: SearchItem[]) => {
+  const offers = searchItems.reduce<CommertialOffer[]>((acc, currentItem) => {
+    for (const seller of currentItem.sellers) {
+      if (isSellerAvailable(seller)) {
+        acc.push(seller.commertialOffer)
+      }
+    }
+
+    return acc
+  }, [])
+
+  return {
+    sellingPrice: getMaxAndMinForAttribute(offers, 'Price'),
+    listPrice: getMaxAndMinForAttribute(offers, 'ListPrice'),
+  }
 }

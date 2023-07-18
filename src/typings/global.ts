@@ -261,6 +261,102 @@ declare global {
 
   type FacetsBehavior = 'Static' | 'Dynamic'
 
+  interface SkuDocument {
+    Id: string
+    AlternateIds: Record<string, string>
+    AlternateIdValues: string[]
+    ProductId: string
+    VtexScore: number
+    ProductRefId: string
+    MetaTagDescription: string
+    ReleaseDate: string // timestamp?
+    GTIN: string
+    IsVisible: boolean
+    IsActive: boolean
+    IsKit: boolean
+    IsKitOptimized: boolean
+    FlagKitItensSellApart: boolean
+    IsTransported: boolean
+    IsInventoried: boolean
+    IsGiftCardRecharge: boolean
+    Name: string
+    NameComplete: string
+    ProductName: string
+    ProductTitle: string
+    NameComplement: string
+    Description: string
+    Dimension: Record<string, number | null>
+    LinkId: string
+    ManufacturerCode: string
+    BrandId: number
+    BrandName: string
+    IsBrandActive: boolean
+    DirectCategoryId: number
+    CategoriesId: number[]
+    CategoriesName: Record<string, string>
+    CategoriesFullPath: string[]
+    SuggestedGlobalCategoryId: number
+    ProductClusterIds: number[]
+    PositionsInClusters: Record<string, number>
+    ProductClusterNames: Record<string, string>
+    ProductClusterHighLightIds: any[] // fix
+    ProductClusterHighlights: any // fix
+    ProductClusterSearchableIds: number[]
+    ProductClusterOrder: Record<string, number>
+    ShowIfNotAvailable: boolean
+    KeyWords: string
+    BrandKeyWords: string
+    CategoryKeyWords: string
+    ModalType: any // fix
+    Position: number
+    MeasurementUnit: string
+    TaxCode: string
+    UnitMultiplier: number
+    SalesChannels: number[]
+    Videos: any[] // fix
+    SpecificationGroups: SkuDocumentSpecificationGroup[]
+    IsProductActive: boolean
+  }
+
+  interface SkuDocumentSpecificationGroup {
+    Id: number
+    GroupName: string
+    Position: number
+    CategoryId: number | null
+    Specifications: SkuDocumentSpecification[]
+  }
+
+  interface SkuDocumentSpecificationValue {
+    Id: string
+    Position: number
+    Value: string
+  }
+
+  interface SkuDocumentSpecificationField {
+    Id: number
+    FieldGroupId: number
+    Name: string
+    Description: string | null
+    IsRequired: boolean
+    IsOnProductDetails: boolean
+    CategoryId: number | null
+    IsFilter: boolean
+    Position: number
+    IsStockKeppingUnit: boolean
+    IsActive: boolean
+    IsSideMenuLinkActive: boolean
+    IsTopMenuLinkActive: boolean
+  }
+
+  interface SkuDocumentSpecification {
+    Field: SkuDocumentSpecificationField
+    IsOnProductDetails: boolean
+    FieldId: string
+    Name: string
+    Position: number
+    SpecificationValues: SkuDocumentSpecificationValue[]
+  }
+
   interface SearchProduct {
     cacheId: string
     productId: string
