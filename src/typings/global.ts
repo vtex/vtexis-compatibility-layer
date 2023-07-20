@@ -269,7 +269,7 @@ declare global {
     VtexScore: number
     ProductRefId: string
     MetaTagDescription: string
-    ReleaseDate: string // timestamp?
+    ReleaseDate: string
     GTIN: string
     IsVisible: boolean
     IsActive: boolean
@@ -299,21 +299,20 @@ declare global {
     ProductClusterIds: number[]
     PositionsInClusters: Record<string, number>
     ProductClusterNames: Record<string, string>
-    ProductClusterHighLightIds: any[] // fix
-    ProductClusterHighlights: any // fix
+    ProductClusterHighlights: Record<string, string>
     ProductClusterSearchableIds: number[]
     ProductClusterOrder: Record<string, number>
     ShowIfNotAvailable: boolean
     KeyWords: string
     BrandKeyWords: string
     CategoryKeyWords: string
-    ModalType: any // fix
+    ModalType: any
     Position: number
     MeasurementUnit: string
     TaxCode: string
     UnitMultiplier: number
     SalesChannels: number[]
-    Videos: any[] // fix
+    Videos: any[]
     SpecificationGroups: SkuDocumentSpecificationGroup[]
     IsProductActive: boolean
   }

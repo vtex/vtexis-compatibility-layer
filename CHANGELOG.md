@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Mapping from search document to product.
+
 ## [1.2.13] - 2022-12-20
 
 ### Fixed
