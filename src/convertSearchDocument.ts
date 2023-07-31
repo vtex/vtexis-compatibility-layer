@@ -60,6 +60,10 @@ const specificationsInfoFromDocument = (SpecificationGroups: SkuDocumentSpecific
       (specification) => specification.SpecificationValues.filter((spec) => spec.Value).length
     )
 
+    if (!specs.length) {
+      return
+    }
+
     allSpecificationsGroups.push(group.GroupName)
     specs.forEach(({ Name, Position, IsOnProductDetails, FieldId, SpecificationValues }) => {
       specificationsInfo[Name] = SpecificationValues.map((value) => value.Value)
