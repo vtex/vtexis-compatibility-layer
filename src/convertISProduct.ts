@@ -1,7 +1,5 @@
-import { pathOr } from 'ramda'
-
 import convertSKU from './convertSKU'
-import { getMaxAndMinForAttribute, objToNameValue } from './utils'
+import { getPriceRange, objToNameValue } from './utils'
 
 interface Specification {
   values: string[]
@@ -99,25 +97,6 @@ const getProperties = (
       values,
     }
   })
-
-const isSellerAvailable = (seller: Seller) => pathOr(0, ['commertialOffer', 'AvailableQuantity'], seller) > 0
-
-const getPriceRange = (searchItems: SearchItem[]) => {
-  const offers = searchItems.reduce<CommertialOffer[]>((acc, currentItem) => {
-    for (const seller of currentItem.sellers) {
-      if (isSellerAvailable(seller)) {
-        acc.push(seller.commertialOffer)
-      }
-    }
-
-    return acc
-  }, [])
-
-  return {
-    sellingPrice: getMaxAndMinForAttribute(offers, 'Price'),
-    listPrice: getMaxAndMinForAttribute(offers, 'ListPrice'),
-  }
-}
 
 export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: string, indexingType?: IndexingType) => {
   const categories: string[] = []
