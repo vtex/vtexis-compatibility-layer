@@ -164,6 +164,8 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
 
   const variations = getVariations(sku, product)
 
+  const attributes = sku.catalogAttributes ?? []
+
   const item: SearchItem & { [key: string]: any } = {
     sellers,
     images,
@@ -185,6 +187,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
     videos: sku.videos ?? [],
     attachments: [],
     isKit: false,
+    attributes
   }
 
   variations.forEach((variation) => {
