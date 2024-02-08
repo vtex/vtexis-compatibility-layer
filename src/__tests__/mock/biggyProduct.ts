@@ -186,6 +186,7 @@ export const biggyProductMock: BiggySearchProduct = {
           id: '1',
         },
       ],
+      catalogAttributes: []
     },
     {
       image: 'http://storecomponents.vteximg.com.br/arquivos/ids/155643-55-55/Frame-2.jpg?v=637411555784670000',
@@ -300,6 +301,7 @@ export const biggyProductMock: BiggySearchProduct = {
       oldPriceText: '$1,000.50',
       priceText: '$600.30',
       spotPriceText: '$600.30',
+      catalogAttributes: []
     },
   ],
   link: 'tank-top',

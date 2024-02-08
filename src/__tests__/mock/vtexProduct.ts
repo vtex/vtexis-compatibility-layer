@@ -376,6 +376,7 @@ export const vtexProductMock: SearchProduct = {
       ],
       kitItems: [],
       attachments: [],
+      attributes: []
     },
     {
       itemId: '4',
@@ -640,6 +641,7 @@ export const vtexProductMock: SearchProduct = {
       ],
       kitItems: [],
       attachments: [],
+      attributes: []
     },
   ],
 }

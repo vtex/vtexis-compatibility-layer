@@ -124,6 +124,7 @@ declare global {
     attributes: BiggySKUAttribute[]
     sellers: BiggySeller[]
     policies: BiggyPolicy[]
+    catalogAttributes: BiggySKUCatalogAttribute[]
   }
 
   interface BiggyProductExtraData {
@@ -160,6 +161,13 @@ declare global {
   interface BiggySKUAttribute {
     key: string
     value: string
+  }
+
+  interface BiggySKUCatalogAttribute {
+    id: string
+    name: string
+    value: string
+    visible: boolean
   }
 
   interface BiggyCategoryTree {
@@ -444,6 +452,7 @@ declare global {
       itemId: string
       amount: number
     }>
+    attributes: SearchItemAttribute[]
   }
 
   interface Variation {
@@ -465,6 +474,13 @@ declare global {
 
   interface SearchItemExtended extends SearchItem {
     skuSpecifications?: SkuSpecification[]
+  }
+
+  interface SearchItemAttribute {
+    id: string,
+    name: string,
+    value: string,
+    visible: boolean
   }
 
   interface SkuSpecification {
