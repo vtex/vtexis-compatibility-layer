@@ -124,7 +124,7 @@ declare global {
     attributes: BiggySKUAttribute[]
     sellers: BiggySeller[]
     policies: BiggyPolicy[]
-    catalogAttributes: BiggySKUCatalogAttribute[]
+    catalogAttributes?: BiggySKUCatalogAttribute[]
   }
 
   interface BiggyProductExtraData {

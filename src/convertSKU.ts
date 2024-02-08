@@ -181,7 +181,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
 
   const variations = getVariations(sku, product)
 
-  const attributes = convertAttributes(sku.catalogAttributes)
+  const attributes = convertAttributes(sku.catalogAttributes ?? [])
 
   const item: SearchItem & { [key: string]: any } = {
     sellers,
