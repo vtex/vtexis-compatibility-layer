@@ -154,23 +154,6 @@ const convertImages = (images: BiggyProductImage[], indexingType?: IndexingType)
   return vtexImages
 }
 
-const convertAttributes = (skuCatalogAttributes: BiggySKUCatalogAttribute[]): SearchItemAttribute[] => {
-  const attributes: SearchItemAttribute[] = []
-
-  skuCatalogAttributes.forEach((catalogAttribute) => {
-    const attribute: SearchItemAttribute = {
-      id: catalogAttribute.id,
-      name: catalogAttribute.name,
-      value: catalogAttribute.value,
-      visible: catalogAttribute.visible
-    }
-
-    attributes.push(attribute)
-  })
-
-  return attributes
-}
-
 const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tradePolicy?: string) => (
   sku: BiggySearchSKU
 ): SearchItem & { [key: string]: any } => {
@@ -181,7 +164,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
 
   const variations = getVariations(sku, product)
 
-  const attributes = convertAttributes(sku.catalogAttributes ?? [])
+  const attributes = sku.catalogAttributes ?? []
 
   const item: SearchItem & { [key: string]: any } = {
     sellers,

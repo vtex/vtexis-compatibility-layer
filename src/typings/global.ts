@@ -452,7 +452,7 @@ declare global {
       itemId: string
       amount: number
     }>
-    attributes: SearchItemAttribute[]
+    attributes?: BiggySKUCatalogAttribute[]
   }
 
   interface Variation {
@@ -474,13 +474,6 @@ declare global {
 
   interface SearchItemExtended extends SearchItem {
     skuSpecifications?: SkuSpecification[]
-  }
-
-  interface SearchItemAttribute {
-    id: string,
-    name: string,
-    value: string,
-    visible: boolean
   }
 
   interface SkuSpecification {
