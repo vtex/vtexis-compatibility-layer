@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- New fields / conversion from SKU catalogAttributes to item attributes
+
 ## [1.3.0] - 2023-08-15
 
 ### Added
