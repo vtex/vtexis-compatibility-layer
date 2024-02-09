@@ -210,7 +210,7 @@ const setDefaultSeller = (sellers: Array<Seller & { active: boolean }>): Seller[
 
   const [defaultSeller] = availableSellers.sort((a, b) => (a.commertialOffer.Price > b.commertialOffer.Price ? 1 : -1))
 
-  return sellers.map((seller) => {
+  const sellersWithDefault = sellers.map((seller) => {
     return {
       sellerId: seller.sellerId,
       sellerDefault: seller.sellerId === defaultSeller.sellerId,
@@ -219,6 +219,8 @@ const setDefaultSeller = (sellers: Array<Seller & { active: boolean }>): Seller[
       commertialOffer: seller.commertialOffer,
     }
   })
+
+  return sellersWithDefault.sort((sellerA) => (sellerA.sellerDefault ? -1 : 1))
 }
 
 const getSkuSellers = (offer: SkuOfferDetails, unitMultiplier: number) => {
