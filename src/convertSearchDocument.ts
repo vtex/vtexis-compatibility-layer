@@ -251,17 +251,26 @@ const getSkuSellers = (offer: SkuOfferDetails, unitMultiplier: number) => {
   return setDefaultSeller([seller1].concat(otherSellers))
 }
 
-const getSkuVariations = (SpecificationGroups: SkuDocumentSpecificationGroup[]) => {
+const getSkuSubscriptions = (agregatedAttachments: SkuDocumentAttachment[]) =>
+  agregatedAttachments.filter((attachment) => attachment.Name.includes('vtex.subscription.') && attachment.IsActive)
+
+const getSkuVariations = (
+  specificationGroups: SkuDocumentSpecificationGroup[],
+  attachments: SkuDocumentAttachment[]
+) => {
   const attributes: Array<{
     key: string
     value: string
   }> = []
 
-  SpecificationGroups.forEach((group) => {
+  specificationGroups.forEach((group) => {
     const filteredSpecs = group.Specifications.filter(
       (specification) =>
         specification.SpecificationValues.filter((spec) => spec.Value).length && specification.Field.IsStockKeppingUnit
-    )
+    ).map((specification) => ({
+      ...specification,
+      SpecificationValues: specification.SpecificationValues.filter((spec) => spec.Value),
+    }))
 
     filteredSpecs.forEach((spec) => {
       spec.SpecificationValues.forEach((value) => {
@@ -269,13 +278,17 @@ const getSkuVariations = (SpecificationGroups: SkuDocumentSpecificationGroup[]) 
           key: spec.Field.Name,
           value: value.Value,
         })
-        // build_sku_subscriptions_sku_attributes (?)
         // translate (ver text_attributes)
       })
     })
   })
 
-  const variations = attributes.map((attr) => ({
+  const subscriptions = getSkuSubscriptions(attachments).map((subscription) => ({
+    key: 'activeSubscriptions',
+    value: subscription.Name.replace('vtex.subscription.', ''),
+  }))
+
+  const variations = attributes.concat(subscriptions).map((attr) => ({
     name: attr.key,
     values: [attr.value],
   }))
@@ -302,7 +315,7 @@ export const itemsFromSearchDocuments = (documents: SkuDocument[], offers: SkuOf
       return
     }
 
-    const variations = getSkuVariations(skuDocument.SpecificationGroups)
+    const variations = getSkuVariations(skuDocument.SpecificationGroups, skuDocument.AgregatedAttachments)
     const images = convertDocumentImages(skuDocument.Images, account)
     const attachments = getAttachments(skuDocument.AgregatedAttachments)
 
@@ -323,7 +336,7 @@ export const itemsFromSearchDocuments = (documents: SkuDocument[], offers: SkuOf
       modalType: skuDocument.ModalType,
       images,
       videos: skuDocument.Videos,
-      variations, // talvez precise fazer um forEach dps
+      variations,
       sellers: getSkuSellers(offer, skuDocument.UnitMultiplier),
       attachments,
       isKit: skuDocument.IsKit,
