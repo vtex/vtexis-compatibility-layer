@@ -269,6 +269,83 @@ declare global {
 
   type FacetsBehavior = 'Static' | 'Dynamic'
 
+  interface SellerMerchantInstallment {
+    Id: string
+    Count: number
+    HasInterestRate: boolean
+    InterestRateAsInt: number
+    Value: number
+    ValueAsInt: number
+    Total: number
+    TotalAsInt: number
+  }
+
+  interface SkuOfferInstallment {
+    Count: number
+    HasInterestRate: boolean
+    InterestRateAsInt: number
+    Value: number
+    ValueAsInt: number
+    Total: number
+    TotalAsInt: number
+    SellerMerchantInstallments: SellerMerchantInstallment[]
+  }
+
+  interface SkuOfferInstallmentOption {
+    PaymentSystem: string
+    PaymentName: string
+    PaymentGroupName: string
+    Value: number
+    ValueAsInt: number
+    Installments: SkuOfferInstallment[]
+  }
+
+  interface PaymentOptions {
+    UpdateStatus: any // validate
+    InstallmentOptions: SkuOfferInstallmentOption[]
+  }
+
+  interface RatesAndBenefitsData {
+    // validate
+    RateAndBenefitsIdentifiers: any[]
+    Teaser: SkuOfferTeaser[]
+  }
+
+  interface SKUSeller {
+    SellerId: string
+    SellerType: number
+    SellerName: string
+    AvailableSalesChannels: number[]
+    StockKeepingUnitId: number
+    SellerStockKeepingUnitId: string
+    SkuCommercialOffer: SalesChannelOffer
+    IsActive: boolean
+  }
+
+  interface SalesChannelOffer extends CommertialOfferBase {
+    IsAvailable: boolean
+    DeliverySlaSamples: any[]
+    RatesAndBenefitsData: RatesAndBenefitsData | null
+    PaymentOptions: PaymentOptions
+  }
+
+  interface SkuOfferDetails {
+    SkuId: string
+    SkuSellers: SKUSeller[]
+    SkuCommercialOfferPerSalesChannel: {
+      [salesChannel: string]: SalesChannelOffer
+    }
+    Seller1: {
+      SellerId: string
+      Name: string
+      SellerType: number
+    }
+  }
+
+  interface SkuOffers {
+    [skuId: string]: SkuOfferDetails
+  }
+
   interface SkuDocument {
     Id: string
     AlternateIds: Record<string, string>
@@ -321,8 +398,28 @@ declare global {
     UnitMultiplier: number
     SalesChannels: number[]
     Videos: any[]
+    Images: SkuDocumentImage[]
+    AgregatedAttachments: SkuDocumentAttachment[]
     SpecificationGroups: SkuDocumentSpecificationGroup[]
     IsProductActive: boolean
+  }
+
+  interface SkuDocumentAttachment {
+    Id: number
+    Name: string
+    DomainValues: string
+    IsActive: boolean
+    IsRequired: boolean
+  }
+
+  interface SkuDocumentImage {
+    ImageId: string
+    ImageLabel: string
+    ImageTag: string
+    ImagePath: string
+    IsMain: boolean
+    ImageText: string
+    LastModified: string
   }
 
   interface SkuDocumentSpecificationGroup {
@@ -427,6 +524,13 @@ declare global {
     children?: Category[]
   }
 
+  interface SearchAttachment {
+    id: number
+    name: string
+    required: boolean
+    domainValues: string
+  }
+
   interface SearchItem {
     itemId: string
     name: string
@@ -441,12 +545,7 @@ declare global {
     videos?: string[]
     variations: Variation[]
     sellers: Seller[]
-    attachments: Array<{
-      id: number
-      name: string
-      required: boolean
-      domainValues: string
-    }>
+    attachments: SearchAttachment[]
     isKit?: boolean
     kitItems?: Array<{
       itemId: string
@@ -513,7 +612,19 @@ declare global {
     Name: string
   }
 
-  interface CommertialOffer {
+  interface CommertialOfferBase {
+    Price: number
+    ListPrice: number
+    PriceWithoutDiscount: number
+    RewardValue: number
+    PriceValidUntil: string
+    AvailableQuantity: number
+    Tax: number
+    GetInfoErrorMessage?: any | null
+    CacheVersionUsedToCallCheckout: string
+  }
+
+  interface CommertialOffer extends CommertialOfferBase {
     DeliverySlaSamplesPerRegion?: Record<string, { DeliverySlaPerTypes: any[]; Region: any | null }>
     Installments: SearchInstallment[]
     discountHighlights?: any[]
@@ -521,21 +632,12 @@ declare global {
     teasers: Teaser[]
     BuyTogether?: any[]
     ItemMetadataAttachment?: any[]
-    Price: number
-    ListPrice: number
     spotPrice: number
     taxPercentage: number
-    PriceWithoutDiscount: number
-    RewardValue: number
-    PriceValidUntil: string
-    AvailableQuantity: number
-    Tax: number
     DeliverySlaSamples?: Array<{
       DeliverySlaPerTypes: any[]
       Region: any | null
     }>
-    GetInfoErrorMessage?: any | null
-    CacheVersionUsedToCallCheckout: string
   }
 
   interface Seller {
@@ -718,6 +820,29 @@ declare global {
   interface TeaserValue {
     name: string
     value: string
+  }
+
+  interface SkuOfferTeaser {
+    Id?: string
+    Name: string
+    TeaserCondition: SkuOfferTeaserCondition
+    TeaserEffect: SkuOfferTeaserEffects
+    Featured?: boolean
+    TeaserType?: string
+  }
+
+  interface SkuOfferTeaserCondition {
+    ConditionParameters: NameValue[]
+    MinimumQuantity: number
+  }
+
+  interface SkuOfferTeaserEffects {
+    EffectParameters: NameValue[]
+  }
+
+  interface NameValue {
+    Name: string
+    Value: string
   }
 
   type IndexingType = 'API' | 'XML'
