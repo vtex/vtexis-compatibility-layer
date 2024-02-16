@@ -292,6 +292,7 @@ declare global {
   }
 
   interface SkuOfferInstallmentOption {
+    Bin?: any
     PaymentSystem: string
     PaymentName: string
     PaymentGroupName: string
@@ -303,6 +304,7 @@ declare global {
   interface PaymentOptions {
     UpdateStatus: any // validate
     InstallmentOptions: SkuOfferInstallmentOption[]
+    [key: string]: any
   }
 
   interface RatesAndBenefitsData {
@@ -320,6 +322,7 @@ declare global {
     SellerStockKeepingUnitId: string
     SkuCommercialOffer: SalesChannelOffer
     IsActive: boolean
+    [key: string]: any
   }
 
   interface SalesChannelOffer extends CommertialOfferBase {
@@ -332,6 +335,9 @@ declare global {
   interface SkuOfferDetails {
     SkuId: string
     SkuSellers: SKUSeller[]
+    RealTimeCalculated: boolean
+    ErrorsDuringGetSkuCommercialContainer: boolean
+    SkuSellerCommunicationErrors: unknown[]
     SkuCommercialOfferPerSalesChannel: {
       [salesChannel: string]: SalesChannelOffer
     }
@@ -353,7 +359,7 @@ declare global {
     ProductId: string
     VtexScore: number
     ProductRefId: string
-    MetaTagDescription: string
+    MetaTagDescription: string | null
     ReleaseDate: string
     GTIN: string
     IsVisible: boolean
@@ -375,33 +381,65 @@ declare global {
     ManufacturerCode: string
     BrandId: number
     BrandName: string
+    BrandUriName?: string
     IsBrandActive: boolean
     DirectCategoryId: number
     CategoriesId: number[]
     CategoriesName: Record<string, string>
+    CategoriesFullPathUriName?: string
+    IsDirectCategoryActive?: boolean
     CategoriesFullPath: string[]
+    DepartmentId?: number
+    AcceptedGlobalCategoryId?: number
     SuggestedGlobalCategoryId: number
     ProductClusterIds: number[]
     PositionsInClusters: Record<string, number>
     ProductClusterNames: Record<string, string>
     ProductClusterHighlights: Record<string, string>
+    ProductClusterHighLightIds: any[]
     ProductClusterSearchableIds: number[]
     ProductClusterOrder: Record<string, number>
     ShowIfNotAvailable: boolean
     KeyWords: string
     BrandKeyWords: string
     CategoryKeyWords: string
+    RewardValue: number
+    CommercialConditionId?: number
     ModalType: any
+    SkuKitsItems?: any[]
     Position: number
     MeasurementUnit: string
-    TaxCode: string
+    TaxCode: string | null
     UnitMultiplier: number
     SalesChannels: number[]
     Videos: any[]
     Images: SkuDocumentImage[]
+    MainImage?: SkuDocumentImage
+    Complements?: Record<string, string[]>
     AgregatedAttachments: SkuDocumentAttachment[]
+    AgregatedServices: AgregatedService[]
     SpecificationGroups: SkuDocumentSpecificationGroup[]
     IsProductActive: boolean
+    Attributes: unknown[]
+    SkuSellers?: unknown[]
+    EstimatedDateArrival?: any
+  }
+
+  interface AgregatedService {
+    Name: string
+    Description: string
+    ListPrice: number
+    Price: number
+    PriceName: string
+    Type: number
+    Id: number
+    HasServicesVisibleOnCart: boolean
+    HasServicesVisibleOnProduct: boolean
+    HasServicesVisibleOnService: boolean
+    IsFile: boolean
+    IsGiftCard: boolean
+    IsRequired: boolean
+    AgregatedAttachments: SkuDocumentAttachment[]
   }
 
   interface SkuDocumentAttachment {
@@ -410,6 +448,7 @@ declare global {
     DomainValues: string
     IsActive: boolean
     IsRequired: boolean
+    Schema?: unknown
   }
 
   interface SkuDocumentImage {
@@ -418,7 +457,8 @@ declare global {
     ImageTag: string
     ImagePath: string
     IsMain: boolean
-    ImageText: string
+    IsZoomSize: boolean
+    ImageText: string | null
     LastModified: string
   }
 
@@ -442,14 +482,15 @@ declare global {
     Name: string
     Description: string | null
     IsRequired: boolean
-    IsOnProductDetails: boolean
+    IsOnProductDetails: boolean | null
     CategoryId: number | null
     IsFilter: boolean
     Position: number
     IsStockKeppingUnit: boolean
     IsActive: boolean
     IsSideMenuLinkActive: boolean
-    IsTopMenuLinkActive: boolean
+    IsTopMenuLinkActive: boolean | null
+    FieldTypeId: number
   }
 
   interface SkuDocumentSpecification {
@@ -599,7 +640,7 @@ declare global {
     imageLabel: string | null
     imageTag: string
     imageUrl: string
-    imageText: string
+    imageText: string | null
   }
 
   interface SearchInstallment {
@@ -617,7 +658,7 @@ declare global {
     ListPrice: number
     PriceWithoutDiscount: number
     RewardValue: number
-    PriceValidUntil: string
+    PriceValidUntil: string | null
     AvailableQuantity: number
     Tax: number
     GetInfoErrorMessage?: any | null

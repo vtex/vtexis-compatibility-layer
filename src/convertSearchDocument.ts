@@ -398,7 +398,7 @@ export const convertSearchDocument = async (documents: SkuDocument[], offers: Sk
     priceRange: getPriceRange(items),
     categoryId: DirectCategoryId.toString(),
     productTitle: ProductTitle,
-    metaTagDescription: MetaTagDescription,
+    metaTagDescription: MetaTagDescription ?? '',
     clusterHighlights: objToNameValue('id', 'name', ProductClusterHighlights),
     productClusters: objToNameValue('id', 'name', ProductClusterNames),
     searchableClusters,
