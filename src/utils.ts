@@ -59,3 +59,7 @@ export const getPriceRange = (searchItems: SearchItem[]) => {
     listPrice: getMaxAndMinForAttribute(offers, 'ListPrice'),
   }
 }
+
+const TICKS_AT_EPOCH = 621355968000000000
+
+export const dateToTicks = (dateTime: string) => (new Date(dateTime)).getTime() * 10000 + TICKS_AT_EPOCH

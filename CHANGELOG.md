@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Get SKU details from SKU document when mapping search document.
+
 ## [1.4.1] - 2024-02-08
 
 ## [1.4.0] - 2024-02-08
