@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Translations to product query.
+
 ## [1.5.0] - 2024-02-27
 
 ### Changed
