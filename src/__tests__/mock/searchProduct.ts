@@ -91,7 +91,20 @@ export const searchProductMock: SearchProduct & {
       ],
     },
   ],
-  skuSpecifications: [],
+  skuSpecifications: [
+    {
+      field: {
+        name: 'Variante_Cor',
+        originalName: 'Variante_Cor',
+      },
+      values: [
+        {
+          name: 'Roxo/Lilas',
+          originalName: 'Roxo/Lilas',
+        },
+      ],
+    },
+  ],
   productClusters: [
     {
       id: '23022',

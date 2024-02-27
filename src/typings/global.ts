@@ -887,4 +887,10 @@ declare global {
   }
 
   type IndexingType = 'API' | 'XML'
+
+  interface TranslatedProperty {
+    field: string
+    context: string
+    translation: string
+  }
 }

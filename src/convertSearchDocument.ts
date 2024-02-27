@@ -1,11 +1,5 @@
 import { dateToTicks, getPriceRange, getTranslationInfo, objToNameValue } from './utils'
 
-interface TranslatedProperty {
-  field: string
-  context: string
-  translation: string
-}
-
 const searchableClustersFromDocument = (
   ProductClusterNames: Record<string, string>,
   ProductClusterSearchableIds: number[]

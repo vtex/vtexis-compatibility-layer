@@ -285,7 +285,7 @@ export const searchDocumentMock: SkuDocument = {
             CategoryId: null,
             IsFilter: false,
             Position: 1,
-            IsStockKeppingUnit: false,
+            IsStockKeppingUnit: true,
             IsActive: true,
             IsSideMenuLinkActive: false,
             IsTopMenuLinkActive: null,
