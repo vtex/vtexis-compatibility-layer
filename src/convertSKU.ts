@@ -187,7 +187,7 @@ const convertSKU = (product: BiggySearchProduct, indexingType?: IndexingType, tr
     videos: sku.videos ?? [],
     attachments: [],
     isKit: false,
-    attributes
+    attributes,
   }
 
   variations.forEach((variation) => {

@@ -1,4 +1,4 @@
-import { dateToTicks, getPriceRange, objToNameValue } from './utils'
+import { dateToTicks, getPriceRange, getTranslationInfo, objToNameValue } from './utils'
 
 const searchableClustersFromDocument = (
   ProductClusterNames: Record<string, string>,
@@ -13,7 +13,11 @@ const searchableClustersFromDocument = (
   return searchableClusters
 }
 
-const categoriesFromDocument = (CategoriesFullPath: string[], CategoriesName: Record<string, string>) => {
+const categoriesFromDocument = (
+  CategoriesFullPath: string[],
+  CategoriesName: Record<string, string>,
+  translations?: TranslatedProperty[]
+) => {
   const categories: string[] = []
 
   CategoriesFullPath.forEach((path) => {
@@ -21,7 +25,9 @@ const categoriesFromDocument = (CategoriesFullPath: string[], CategoriesName: Re
     const ids = path.split('/').filter((value) => value)
 
     ids.forEach((id) => {
-      categoryPath = categoryPath.concat(`${CategoriesName[id]}/`)
+      const translatedName = getTranslationInfo('CategoryName', translations, id) ?? CategoriesName[id]
+
+      categoryPath = categoryPath.concat(`${translatedName}/`)
     })
 
     categories.push(categoryPath)
@@ -62,7 +68,10 @@ interface SpecificationInfo {
   [key: string]: any
 }
 
-const specificationsInfoFromDocument = (SpecificationGroups: SkuDocumentSpecificationGroup[]): SpecificationInfo => {
+const specificationsInfoFromDocument = (
+  SpecificationGroups: SkuDocumentSpecificationGroup[],
+  translations?: TranslatedProperty[]
+): SpecificationInfo => {
   const specificationsInfo: Record<string, any> = {}
   const specificationGroups: SpecificationGroup[] = []
   const properties: ProductProperty[] = []
@@ -85,9 +94,11 @@ const specificationsInfoFromDocument = (SpecificationGroups: SkuDocumentSpecific
 
     groupSpecs
       .map((specification) => ({
-        name: specification.Name,
-        originalName: specification.Name, // translate
-        values: specification.SpecificationValues.map((spec) => spec.Value), // translate
+        name: getTranslationInfo('SpecificationName', translations, specification.FieldId) ?? specification.Name,
+        originalName: specification.Name,
+        values: specification.SpecificationValues.map(
+          (spec) => getTranslationInfo('SpecificationValue', translations, spec.Id) ?? spec.Value
+        ),
       }))
       .forEach((spec) => properties.push(spec))
 
@@ -95,12 +106,14 @@ const specificationsInfoFromDocument = (SpecificationGroups: SkuDocumentSpecific
 
     if (visibleSpecs.length) {
       specificationGroups.push({
-        name: group.GroupName, // translate
+        name: group.GroupName,
         originalName: group.GroupName,
         specifications: visibleSpecs.map((specification) => ({
-          name: specification.Name,
+          name: getTranslationInfo('SpecificationName', translations, specification.FieldId) ?? specification.Name,
           originalName: specification.Name,
-          values: specification.SpecificationValues.map((spec) => spec.Value), // translate
+          values: specification.SpecificationValues.map(
+            (spec) => getTranslationInfo('SpecificationValue', translations, spec.Id) ?? spec.Value
+          ),
         })),
       })
     }
@@ -121,6 +134,46 @@ const specificationsInfoFromDocument = (SpecificationGroups: SkuDocumentSpecific
     specificationGroups,
     properties,
   }
+}
+
+const skuSpecificationsFromDocuments = (
+  allSpecGroups: SkuDocumentSpecificationGroup[][],
+  translations?: TranslatedProperty[]
+) => {
+  const skuSpecs: SkuDocumentSpecification[] = []
+  const groupedSpecs: Record<string, { Name: string; SpecificationValues: SkuDocumentSpecificationValue[] }> = {}
+
+  allSpecGroups.flat().forEach((specGroup) => {
+    const skuSpecsFromGroup = specGroup.Specifications.filter((spec) => spec.Field.IsStockKeppingUnit)
+
+    if (skuSpecsFromGroup.length) {
+      skuSpecs.push(...skuSpecsFromGroup)
+    }
+  })
+
+  skuSpecs.forEach((specification) => {
+    groupedSpecs[specification.FieldId] = {
+      Name: specification.Name,
+      SpecificationValues: (groupedSpecs[specification.FieldId]?.SpecificationValues ?? []).concat(
+        specification.SpecificationValues
+      ),
+    }
+  })
+
+  return Object.keys(groupedSpecs).map((key) => {
+    const item = groupedSpecs[key]
+
+    return {
+      field: {
+        name: getTranslationInfo('SpecificationName', translations, key) ?? item.Name,
+        originalName: item.Name,
+      },
+      values: item.SpecificationValues.map((value) => ({
+        name: getTranslationInfo('SpecificationValue', translations, value.Id) ?? value.Value,
+        originalName: value.Value,
+      })),
+    }
+  })
 }
 
 const getSpotPrice = (paymentOptions: PaymentOptions, priceWithoutDiscount: number) => {
@@ -256,7 +309,8 @@ const getSkuSubscriptions = (agregatedAttachments: SkuDocumentAttachment[]) =>
 
 const getSkuVariations = (
   specificationGroups: SkuDocumentSpecificationGroup[],
-  attachments: SkuDocumentAttachment[]
+  attachments: SkuDocumentAttachment[],
+  translations?: TranslatedProperty[]
 ) => {
   const attributes: Array<{
     key: string
@@ -275,10 +329,9 @@ const getSkuVariations = (
     filteredSpecs.forEach((spec) => {
       spec.SpecificationValues.forEach((value) => {
         attributes.push({
-          key: spec.Field.Name,
-          value: value.Value,
+          key: getTranslationInfo('SpecificationName', translations, spec.Field.Id.toString()) ?? spec.Field.Name,
+          value: getTranslationInfo('SpecificationValue', translations, value.Id) ?? value.Value,
         })
-        // translate (ver text_attributes)
       })
     })
   })
@@ -305,7 +358,12 @@ const getAttachments = (attachments: SkuDocumentAttachment[]): SearchAttachment[
   }))
 }
 
-export const itemsFromSearchDocuments = (documents: SkuDocument[], offers: SkuOffers, account: string) => {
+export const itemsFromSearchDocuments = (
+  documents: SkuDocument[],
+  offers: SkuOffers,
+  account: string,
+  translations?: TranslatedProperty[]
+) => {
   const items: SearchItem[] = []
 
   documents.forEach((skuDocument) => {
@@ -315,14 +373,17 @@ export const itemsFromSearchDocuments = (documents: SkuDocument[], offers: SkuOf
       return
     }
 
-    const variations = getSkuVariations(skuDocument.SpecificationGroups, skuDocument.AgregatedAttachments)
+    const variations = getSkuVariations(skuDocument.SpecificationGroups, skuDocument.AgregatedAttachments, translations)
     const images = convertDocumentImages(skuDocument.Images, account)
     const attachments = getAttachments(skuDocument.AgregatedAttachments)
+    const nameComplete = `${
+      getTranslationInfo('ProductName', translations, skuDocument.ProductId) ?? skuDocument.ProductName
+    } ${getTranslationInfo('SkuName', translations, skuDocument.Id) ?? skuDocument.Name}`
 
     const searchItem = {
       itemId: skuDocument.Id,
-      name: skuDocument.Name,
-      nameComplete: skuDocument.NameComplete,
+      name: getTranslationInfo('SkuName', translations, skuDocument.Id) ?? skuDocument.Name,
+      nameComplete,
       complementName: skuDocument.NameComplement,
       ean: skuDocument.AlternateIds.Ean ?? '',
       referenceId: [
@@ -340,7 +401,7 @@ export const itemsFromSearchDocuments = (documents: SkuDocument[], offers: SkuOf
       sellers: getSkuSellers(offer, skuDocument.UnitMultiplier),
       attachments,
       isKit: skuDocument.IsKit,
-      kitItems: [], // do we need to define this prop?
+      kitItems: [],
     }
 
     items.push(searchItem)
@@ -349,7 +410,12 @@ export const itemsFromSearchDocuments = (documents: SkuDocument[], offers: SkuOf
   return items
 }
 
-export const convertSearchDocument = async (documents: SkuDocument[], offers: SkuOffers, account: string) => {
+export const convertSearchDocument = async (
+  documents: SkuDocument[],
+  offers: SkuOffers,
+  account: string,
+  translations?: TranslatedProperty[]
+) => {
   const [
     {
       ProductId,
@@ -374,10 +440,14 @@ export const convertSearchDocument = async (documents: SkuDocument[], offers: Sk
 
   const searchableClusters = searchableClustersFromDocument(ProductClusterNames, ProductClusterSearchableIds)
 
-  const categories = categoriesFromDocument(CategoriesFullPath, CategoriesName)
-  // validar se só precisa pegar do primeiro item msm. talvez tenha que unir os itens
-  const specificationsInfo = specificationsInfoFromDocument(SpecificationGroups)
-  const items = itemsFromSearchDocuments(documents, offers, account)
+  const categories = categoriesFromDocument(CategoriesFullPath, CategoriesName, translations)
+  const specificationsInfo = specificationsInfoFromDocument(SpecificationGroups, translations)
+  const skuSpecifications = skuSpecificationsFromDocuments(
+    documents.map((document) => document.SpecificationGroups),
+    translations
+  )
+
+  const items = itemsFromSearchDocuments(documents, offers, account, translations)
 
   const product: SearchProduct & {
     cacheId?: string
@@ -386,14 +456,14 @@ export const convertSearchDocument = async (documents: SkuDocument[], offers: Sk
     categories,
     categoriesIds: CategoriesFullPath,
     productId: ProductId,
-    productName: ProductName,
+    productName: getTranslationInfo('ProductName', translations) ?? ProductName,
     cacheId: `sp-${ProductId}`,
     productReference: ProductRefId,
-    linkText: LinkId, // translate
-    brand: BrandName,
+    linkText: LinkId,
+    brand: getTranslationInfo('BrandName', translations) ?? BrandName,
     brandId: BrandId,
     link: `https://portal.vtexcommercestable.com.br/${LinkId}/p`,
-    description: Description,
+    description: getTranslationInfo('Description', translations) ?? Description,
     items,
     priceRange: getPriceRange(items),
     categoryId: DirectCategoryId.toString(),
@@ -403,8 +473,8 @@ export const convertSearchDocument = async (documents: SkuDocument[], offers: Sk
     productClusters: objToNameValue('id', 'name', ProductClusterNames),
     searchableClusters,
     titleTag: '',
-    categoryTree: [], // fix
-    skuSpecifications: [], // fix
+    categoryTree: [],
+    skuSpecifications,
     ...specificationsInfo,
     origin: 'search-document',
     releaseDate: ReleaseDate,

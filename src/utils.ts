@@ -63,3 +63,19 @@ export const getPriceRange = (searchItems: SearchItem[]) => {
 const TICKS_AT_EPOCH = 621355968000000000
 
 export const dateToTicks = (dateTime: string) => (new Date(dateTime)).getTime() * 10000 + TICKS_AT_EPOCH
+
+export const getTranslationInfo = (
+  info: string,
+  translationInfo?: Array<{ field: string; context: string; translation: string }>,
+  infoId?: string
+) => {
+  if (!translationInfo || !translationInfo.length) {
+    return undefined
+  }
+
+  const item = translationInfo.find((value) =>
+    infoId ? value.field === info && value.context === infoId : value.field === info
+  )
+
+  return item ? item.translation : undefined
+}
