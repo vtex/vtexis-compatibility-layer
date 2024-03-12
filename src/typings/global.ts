@@ -669,13 +669,13 @@ declare global {
     DeliverySlaSamplesPerRegion?: Record<string, { DeliverySlaPerTypes: any[]; Region: any | null }>
     Installments: SearchInstallment[]
     discountHighlights?: any[]
-    GiftSkuIds?: string[]
+    GiftSkuIds: string[]
     teasers: Teaser[]
     BuyTogether?: any[]
     ItemMetadataAttachment?: any[]
     spotPrice: number
     taxPercentage: number
-    DeliverySlaSamples?: Array<{
+    DeliverySlaSamples: Array<{
       DeliverySlaPerTypes: any[]
       Region: any | null
     }>
