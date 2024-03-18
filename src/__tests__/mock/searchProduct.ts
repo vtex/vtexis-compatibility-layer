@@ -27,17 +27,6 @@ export const searchProductMock: SearchProduct & {
   },
   specificationGroups: [
     {
-      name: 'Variantes',
-      originalName: 'Variantes',
-      specifications: [
-        {
-          name: 'Variante_Cor',
-          originalName: 'Variante_Cor',
-          values: ['Roxo/Lilas'],
-        },
-      ],
-    },
-    {
       name: 'Características do Produto',
       originalName: 'Características do Produto',
       specifications: [
@@ -68,11 +57,6 @@ export const searchProductMock: SearchProduct & {
       name: 'allSpecifications',
       originalName: 'allSpecifications',
       specifications: [
-        {
-          name: 'Variante_Cor',
-          originalName: 'Variante_Cor',
-          values: ['Roxo/Lilas'],
-        },
         {
           name: 'Condição do Produto',
           originalName: 'Condição do Produto',
@@ -122,11 +106,6 @@ export const searchProductMock: SearchProduct & {
     },
   ],
   properties: [
-    {
-      name: 'Variante_Cor',
-      originalName: 'Variante_Cor',
-      values: ['Roxo/Lilas'],
-    },
     {
       name: 'Condição do Produto',
       originalName: 'Condição do Produto',
@@ -248,6 +227,7 @@ export const searchProductMock: SearchProduct & {
           commertialOffer: {
             AvailableQuantity: 15,
             CacheVersionUsedToCallCheckout: '_',
+            GiftSkuIds: [],
             Installments: [
               {
                 InterestRate: 0,
@@ -944,6 +924,7 @@ export const searchProductMock: SearchProduct & {
             spotPrice: 2180,
             taxPercentage: 0,
             teasers: [],
+            DeliverySlaSamples: [],
           },
           sellerDefault: true,
           sellerId: '38900',
@@ -953,6 +934,7 @@ export const searchProductMock: SearchProduct & {
           addToCartLink:
             'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=326782298&qty=1&seller=1&sc=1&price=0&cv=_&sc=1',
           commertialOffer: {
+            GiftSkuIds: [],
             AvailableQuantity: 0,
             CacheVersionUsedToCallCheckout: '_',
             Installments: [],
@@ -966,6 +948,7 @@ export const searchProductMock: SearchProduct & {
             spotPrice: 0,
             taxPercentage: 0,
             teasers: [],
+            DeliverySlaSamples: [],
           },
           sellerDefault: false,
           sellerId: '1',

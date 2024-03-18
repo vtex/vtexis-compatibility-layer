@@ -42,12 +42,12 @@ export const translationsMock: TranslatedProperty[] = [
   {
     field: 'SpecificationName',
     context: '30',
-    translation: 'Variant_Color',
+    translation: 'Condição do Produto',
   },
   {
     field: 'SpecificationValue',
     context: 'Roxo/Lilas',
-    translation: 'Purple',
+    translation: 'Novo',
   },
   {
     field: 'SkuName',

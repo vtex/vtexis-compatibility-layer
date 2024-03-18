@@ -93,6 +93,7 @@ const specificationsInfoFromDocument = (
     })
 
     groupSpecs
+      .filter((specification) => !specification.Field.IsStockKeppingUnit)
       .map((specification) => ({
         name: getTranslationInfo('SpecificationName', translations, specification.FieldId) ?? specification.Name,
         originalName: specification.Name,
@@ -102,7 +103,7 @@ const specificationsInfoFromDocument = (
       }))
       .forEach((spec) => properties.push(spec))
 
-    const visibleSpecs = groupSpecs.filter((spec) => spec.IsOnProductDetails)
+    const visibleSpecs = groupSpecs.filter((spec) => spec.IsOnProductDetails && !spec.Field.IsStockKeppingUnit)
 
     if (visibleSpecs.length) {
       specificationGroups.push({
@@ -248,6 +249,17 @@ const buildCommercialOffer = (skuDocumentOffer: SalesChannelOffer, unitMultiplie
     AvailableQuantity: skuDocumentOffer.AvailableQuantity,
     teasers: skuDocumentOffer.RatesAndBenefitsData ? buildTeasers(skuDocumentOffer.RatesAndBenefitsData) : [],
     Installments: buildInstallments(skuDocumentOffer.PaymentOptions, unitMultiplier),
+    GiftSkuIds: [],
+    BuyTogether: [],
+    DeliverySlaSamples: skuDocumentOffer.AvailableQuantity
+      ? [
+          {
+            DeliverySlaPerTypes: [],
+            Region: null,
+          },
+        ]
+      : [],
+    ItemMetadataAttachment: [],
   }
 }
 
@@ -266,7 +278,7 @@ const setDefaultSeller = (sellers: Array<Seller & { active: boolean }>): Seller[
   const sellersWithDefault = sellers.map((seller) => {
     return {
       sellerId: seller.sellerId,
-      sellerDefault: seller.sellerId === defaultSeller.sellerId,
+      sellerDefault: defaultSeller ? seller.sellerId === defaultSeller.sellerId : seller.sellerId === '1',
       sellerName: seller.sellerName,
       addToCartLink: seller.addToCartLink,
       commertialOffer: seller.commertialOffer,
@@ -396,7 +408,7 @@ export const itemsFromSearchDocuments = (
       unitMultiplier: skuDocument.UnitMultiplier,
       modalType: skuDocument.ModalType,
       images,
-      videos: skuDocument.Videos,
+      Videos: skuDocument.Videos,
       variations,
       sellers: getSkuSellers(offer, skuDocument.UnitMultiplier),
       attachments,
@@ -422,8 +434,10 @@ export const convertSearchDocument = async (
       ProductName,
       BrandId,
       BrandName,
+      NameComplement,
       LinkId,
       ProductRefId,
+      AlternateIds,
       DirectCategoryId,
       ProductTitle,
       MetaTagDescription,
@@ -458,7 +472,7 @@ export const convertSearchDocument = async (
     productId: ProductId,
     productName: getTranslationInfo('ProductName', translations) ?? ProductName,
     cacheId: `sp-${ProductId}`,
-    productReference: ProductRefId,
+    productReference: ProductRefId || AlternateIds.RefId,
     linkText: LinkId,
     brand: getTranslationInfo('BrandName', translations) ?? BrandName,
     brandId: BrandId,
@@ -468,7 +482,7 @@ export const convertSearchDocument = async (
     priceRange: getPriceRange(items),
     categoryId: DirectCategoryId.toString(),
     productTitle: ProductTitle,
-    metaTagDescription: MetaTagDescription ?? '',
+    metaTagDescription: MetaTagDescription ?? NameComplement ?? '',
     clusterHighlights: objToNameValue('id', 'name', ProductClusterHighlights),
     productClusters: objToNameValue('id', 'name', ProductClusterNames),
     searchableClusters,

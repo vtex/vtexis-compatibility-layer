@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Product `properties` and `metaTagDescription` for PDP compatibility.
+
 ## [1.6.0] - 2024-03-05
 
 ### Added

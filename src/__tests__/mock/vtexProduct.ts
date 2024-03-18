@@ -152,6 +152,8 @@ export const vtexProductMock: SearchProduct = {
             'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=3&qty=1&seller=1&sc=1&price=37577&cv=7BC1384A9AE1193BA0E88BF2E10E208A_&sc=1',
           sellerDefault: true,
           commertialOffer: {
+            DeliverySlaSamples: [],
+            GiftSkuIds: [],
             discountHighlights: [],
             teasers: [
               {
@@ -417,6 +419,8 @@ export const vtexProductMock: SearchProduct = {
             'https://portal.vtexcommercestable.com.br/checkout/cart/add?sku=4&qty=1&seller=1&sc=1&price=60030&cv=7BC1384A9AE1193BA0E88BF2E10E208A_&sc=1',
           sellerDefault: true,
           commertialOffer: {
+            DeliverySlaSamples: [],
+            GiftSkuIds: [],
             discountHighlights: [],
             teasers: [
               {
