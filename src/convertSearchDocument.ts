@@ -153,6 +153,10 @@ const skuSpecificationsFromDocuments = (
   })
 
   skuSpecs.forEach((specification) => {
+    if (!specification.SpecificationValues.length) {
+      return
+    }
+
     groupedSpecs[specification.FieldId] = {
       Name: specification.Name,
       SpecificationValues: (groupedSpecs[specification.FieldId]?.SpecificationValues ?? []).concat(
