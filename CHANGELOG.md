@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.2] - 2024-03-20
+
 ### Fixed
 - Remove specifications with no values from `skuSpecifications`.
 
