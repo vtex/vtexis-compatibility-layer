@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Error when sku offer has no payment option.
+
 ## [1.6.2] - 2024-03-20
 
 ### Fixed

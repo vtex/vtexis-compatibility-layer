@@ -181,19 +181,19 @@ const skuSpecificationsFromDocuments = (
   })
 }
 
-const getSpotPrice = (paymentOptions: PaymentOptions, priceWithoutDiscount: number) => {
-  const installments = paymentOptions.InstallmentOptions.flatMap((option) => option.Installments)
-  const installment = installments.find(
+const getSpotPrice = (paymentOptions: PaymentOptions | null, priceWithoutDiscount: number) => {
+  const installments = paymentOptions?.InstallmentOptions.flatMap((option) => option.Installments)
+  const installment = installments?.find(
     (inst) => inst.Count && inst.ValueAsInt && inst.ValueAsInt / 100 < priceWithoutDiscount
   )
 
   return installment ? installment.ValueAsInt / 100 : priceWithoutDiscount
 }
 
-const buildInstallments = (paymentOptions: PaymentOptions, unitMultiplier: number): SearchInstallment[] => {
+const buildInstallments = (paymentOptions: PaymentOptions | null, unitMultiplier: number): SearchInstallment[] => {
   const installments: SearchInstallment[] = []
 
-  paymentOptions.InstallmentOptions.forEach((option) => {
+  paymentOptions?.InstallmentOptions.forEach((option) => {
     option.Installments.forEach((installment) => {
       installments.push({
         NumberOfInstallments: installment.Count,
