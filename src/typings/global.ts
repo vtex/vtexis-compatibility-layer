@@ -329,7 +329,7 @@ declare global {
     IsAvailable: boolean
     DeliverySlaSamples: any[]
     RatesAndBenefitsData: RatesAndBenefitsData | null
-    PaymentOptions: PaymentOptions
+    PaymentOptions: PaymentOptions | null
   }
 
   interface SkuOfferDetails {
