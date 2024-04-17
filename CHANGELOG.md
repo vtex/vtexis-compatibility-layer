@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Error when SKU has no sellers.
+
 ## [1.6.3] - 2024-04-01
 
 ### Fixed

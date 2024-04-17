@@ -494,7 +494,7 @@ declare global {
   }
 
   interface SkuDocumentSpecification {
-    Field: SkuDocumentSpecificationField
+    Field: SkuDocumentSpecificationField | null
     IsOnProductDetails: boolean
     FieldId: string
     Name: string
