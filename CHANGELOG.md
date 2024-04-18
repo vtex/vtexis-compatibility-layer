@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Error when SKU has no sellers.
+- Duplicated values for SKU specifications.
 
 ## [1.6.3] - 2024-04-01
 

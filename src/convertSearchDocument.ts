@@ -157,11 +157,15 @@ const skuSpecificationsFromDocuments = (
       return
     }
 
+    const currentSpecValues = groupedSpecs[specification.FieldId]?.SpecificationValues ?? []
+
+    const newSpecValues = specification.SpecificationValues.filter((specValue) => {
+      return currentSpecValues.findIndex((item) => item.Id === specValue.Id) === -1
+    })
+
     groupedSpecs[specification.FieldId] = {
       Name: specification.Name,
-      SpecificationValues: (groupedSpecs[specification.FieldId]?.SpecificationValues ?? []).concat(
-        specification.SpecificationValues
-      ),
+      SpecificationValues: currentSpecValues.concat(newSpecValues),
     }
   })
 
