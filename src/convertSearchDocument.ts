@@ -93,7 +93,7 @@ const specificationsInfoFromDocument = (
     })
 
     groupSpecs
-      .filter((specification) => !specification.Field.IsStockKeppingUnit)
+      .filter((specification) => !specification.Field?.IsStockKeppingUnit)
       .map((specification) => ({
         name: getTranslationInfo('SpecificationName', translations, specification.FieldId) ?? specification.Name,
         originalName: specification.Name,
@@ -103,7 +103,7 @@ const specificationsInfoFromDocument = (
       }))
       .forEach((spec) => properties.push(spec))
 
-    const visibleSpecs = groupSpecs.filter((spec) => spec.IsOnProductDetails && !spec.Field.IsStockKeppingUnit)
+    const visibleSpecs = groupSpecs.filter((spec) => spec.IsOnProductDetails && !spec.Field?.IsStockKeppingUnit)
 
     if (visibleSpecs.length) {
       specificationGroups.push({
@@ -145,7 +145,7 @@ const skuSpecificationsFromDocuments = (
   const groupedSpecs: Record<string, { Name: string; SpecificationValues: SkuDocumentSpecificationValue[] }> = {}
 
   allSpecGroups.flat().forEach((specGroup) => {
-    const skuSpecsFromGroup = specGroup.Specifications.filter((spec) => spec.Field.IsStockKeppingUnit)
+    const skuSpecsFromGroup = specGroup.Specifications.filter((spec) => spec.Field?.IsStockKeppingUnit)
 
     if (skuSpecsFromGroup.length) {
       skuSpecs.push(...skuSpecsFromGroup)
@@ -157,11 +157,15 @@ const skuSpecificationsFromDocuments = (
       return
     }
 
+    const currentSpecValues = groupedSpecs[specification.FieldId]?.SpecificationValues ?? []
+
+    const newSpecValues = specification.SpecificationValues.filter((specValue) => {
+      return currentSpecValues.findIndex((item) => item.Id === specValue.Id) === -1
+    })
+
     groupedSpecs[specification.FieldId] = {
       Name: specification.Name,
-      SpecificationValues: (groupedSpecs[specification.FieldId]?.SpecificationValues ?? []).concat(
-        specification.SpecificationValues
-      ),
+      SpecificationValues: currentSpecValues.concat(newSpecValues),
     }
   })
 
@@ -295,14 +299,16 @@ const setDefaultSeller = (sellers: Array<Seller & { active: boolean }>): Seller[
 const getSkuSellers = (offer: SkuOfferDetails, unitMultiplier: number) => {
   const [salesChannel] = Object.keys(offer.SkuCommercialOfferPerSalesChannel)
 
-  const seller1: Seller & { active: boolean } = {
-    active: true,
-    sellerId: offer.Seller1.SellerId,
-    sellerName: offer.Seller1.Name,
-    sellerDefault: false,
-    addToCartLink: '', // fix
-    commertialOffer: buildCommercialOffer(offer.SkuCommercialOfferPerSalesChannel[salesChannel], unitMultiplier),
-  }
+  const seller1: (Seller & { active: boolean }) | null = offer.Seller1
+    ? {
+        active: true,
+        sellerId: offer.Seller1.SellerId,
+        sellerName: offer.Seller1.Name,
+        sellerDefault: false,
+        addToCartLink: '', // fix
+        commertialOffer: buildCommercialOffer(offer.SkuCommercialOfferPerSalesChannel[salesChannel], unitMultiplier),
+      }
+    : null
 
   const otherSellers: Array<Seller & { active: boolean }> = offer.SkuSellers.filter((seller) =>
     seller.AvailableSalesChannels.includes(Number(salesChannel))
@@ -317,7 +323,7 @@ const getSkuSellers = (offer: SkuOfferDetails, unitMultiplier: number) => {
     }
   })
 
-  return setDefaultSeller([seller1].concat(otherSellers))
+  return setDefaultSeller((seller1 ? [seller1] : []).concat(otherSellers))
 }
 
 const getSkuSubscriptions = (agregatedAttachments: SkuDocumentAttachment[]) =>
@@ -336,7 +342,7 @@ const getSkuVariations = (
   specificationGroups.forEach((group) => {
     const filteredSpecs = group.Specifications.filter(
       (specification) =>
-        specification.SpecificationValues.filter((spec) => spec.Value).length && specification.Field.IsStockKeppingUnit
+        specification.SpecificationValues.filter((spec) => spec.Value).length && specification.Field?.IsStockKeppingUnit
     ).map((specification) => ({
       ...specification,
       SpecificationValues: specification.SpecificationValues.filter((spec) => spec.Value),
@@ -345,7 +351,7 @@ const getSkuVariations = (
     filteredSpecs.forEach((spec) => {
       spec.SpecificationValues.forEach((value) => {
         attributes.push({
-          key: getTranslationInfo('SpecificationName', translations, spec.Field.Id.toString()) ?? spec.Field.Name,
+          key: getTranslationInfo('SpecificationName', translations, spec.Field!.Id.toString()) ?? spec.Field!.Name,
           value: getTranslationInfo('SpecificationValue', translations, value.Id) ?? value.Value,
         })
       })
