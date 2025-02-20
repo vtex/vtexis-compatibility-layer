@@ -229,7 +229,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     allSpecifications,
     categoryId: product.categoryIds?.slice(-1)[0],
     productTitle: '',
-    metaTagDescription: '',
+    metaTagDescription: product.metaTagDescription ?? '',
     clusterHighlights: objToNameValue('id', 'name', product.clusterHighlights),
     productClusters: [],
     searchableClusters: {},

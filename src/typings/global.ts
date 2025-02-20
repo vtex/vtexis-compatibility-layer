@@ -48,6 +48,7 @@ declare global {
     boost: BiggyBoost
     headSku: string
     extraInfo: BiggyExtraInfo
+    metaTagDescription: string
     oldPriceText: string
     priceText: string
     spotPriceText?: string
