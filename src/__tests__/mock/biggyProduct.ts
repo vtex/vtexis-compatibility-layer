@@ -810,6 +810,7 @@ export const biggyProductMock: BiggySearchProduct = {
   extraInfo: {
     sellerId: '1',
   },
+  metaTagDescription: 'This is a meta tag description',
   oldPriceText: '$600.30',
   priceText: '$375.77',
   spotPriceText: '$375.77',
