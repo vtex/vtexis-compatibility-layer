@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [1.6.4] - 2024-04-22
+## [1.7.0] - 2024-04-22
 
 ### Fixed
 - Error when SKU has no sellers.
