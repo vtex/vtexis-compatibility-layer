@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Add `productTitle` and `titleTag` for ID requests on `americanas`
+
 ## [1.7.0] - 2024-04-22
 
 ### Fixed
