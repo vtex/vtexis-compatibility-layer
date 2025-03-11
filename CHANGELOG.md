@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.7.2] - 2025-03-11
+
 ### Added
 - `regionalize1p` as a `simulationBehavior` option.
 
