@@ -38,14 +38,14 @@ const getDefaultSeller = (sellers: Seller[]) => {
 export const mergeProductWithItems = (
   product: SearchProduct,
   items: SearchItem[],
-  simulationBehavior: 'default' | 'only1P'
+  simulationBehavior: 'default' | 'only1P' | 'regionalize1p'
 ) => {
   const mergedProduct = { ...product }
 
   mergedProduct.items.forEach((item: SearchItem, itemIndex) => {
     const simulationItem = items[itemIndex]
 
-    if (simulationBehavior === 'default') {
+    if (simulationBehavior !== 'only1P') {
       const defaultSeller = getDefaultSeller(simulationItem.sellers)
 
       item.sellers = item.sellers.map((seller: any, simulationIndex: any) => {
