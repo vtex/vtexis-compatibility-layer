@@ -12,11 +12,6 @@ const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string) 
     Tax: sellerB.commertialOffer.Tax ?? sellerA.commertialOffer.Tax,
   }
 
-  // Deal with withoutPriceFulfillment cases
-  if (sellerA.commertialOffer.Price === 0) {
-    sellerA.commertialOffer.AvailableQuantity = 0
-  }
-
   if (!defaultSeller) {
     return sellerA
   }
