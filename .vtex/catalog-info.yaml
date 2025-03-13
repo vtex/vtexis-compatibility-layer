@@ -2,9 +2,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: vtexis-compatibility-layer
+  description:  Compatibility layer between intelligent search and VTEX 
   annotations:
     github.com/project-slug: vtex/vtexis-compatibility-layer
 spec:
-  type: other
-  lifecycle: unknown
+  type: library
+  lifecycle: stable
   owner: search-recommendation
+  system: intelligent-search
