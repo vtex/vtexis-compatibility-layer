@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [1.7.3] - 2025-03-13
+## [1.7.4] - 2025-03-13
 
 ### Removed
 - When `Price=0` we assume that the `AvailableQuantity` is `0`. This validation was used for the `priceWithoutFulFillment` situation, but it is not necessary anymore because it was unintentionally fixed [here](https://github.com/vtex-apps/search-resolver/pull/121).
