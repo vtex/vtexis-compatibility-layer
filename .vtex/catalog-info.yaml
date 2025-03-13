@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: vtexis-compatibility-layer
+  annotations:
+    github.com/project-slug: vtex/vtexis-compatibility-layer
+spec:
+  type: other
+  lifecycle: unknown
+  owner: search-recommendation
