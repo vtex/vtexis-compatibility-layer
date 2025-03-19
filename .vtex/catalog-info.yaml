@@ -9,5 +9,5 @@ metadata:
 spec:
   type: library
   lifecycle: stable
-  owner: search-recommendation
+  owner: te-0016
   system: intelligent-search
