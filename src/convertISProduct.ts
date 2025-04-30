@@ -243,6 +243,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     categoryTree,
     rule: product.rule,
     releaseDate: product.release,
+    deliveryPromisesBadges: product.deliveryPromisesBadges
   }
 
   const specifications: DynamicKey<Specification> = {}
