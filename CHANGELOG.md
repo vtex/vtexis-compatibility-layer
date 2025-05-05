@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-### Added
+## [1.8.0] - 2025-05-05
 
+### Added
 - `deliveryPromisesBadges` field to search product
 
 ## [1.7.4] - 2025-03-13
