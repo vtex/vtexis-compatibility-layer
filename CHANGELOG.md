@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- `deliveryPromisesBadges` field to search product to allow objects instead of string
+
 ## [1.8.0] - 2025-05-05
 
 ### Added

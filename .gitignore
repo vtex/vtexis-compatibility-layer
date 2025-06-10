@@ -7,3 +7,4 @@ Icon
 node_modules/
 lib/
 .eslintcache
+.idea
