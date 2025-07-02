@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - `tags` field to search product
+- `ignoreSimulationQuantity` option on `mergeProductWithItems`
 
 ## [1.9.0] - 2025-06-10
 

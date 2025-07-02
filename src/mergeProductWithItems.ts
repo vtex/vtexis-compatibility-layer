@@ -1,6 +1,10 @@
-const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string) => {
+const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string, ignoreSimulationQuantity?: boolean) => {
   if (sellerB.error) {
     return sellerA
+  }
+
+  if (ignoreSimulationQuantity) {
+    sellerB.commertialOffer.AvailableQuantity = sellerA.commertialOffer.AvailableQuantity
   }
 
   sellerA.commertialOffer = {
@@ -33,7 +37,8 @@ const getDefaultSeller = (sellers: Seller[]) => {
 export const mergeProductWithItems = (
   product: SearchProduct,
   items: SearchItem[],
-  simulationBehavior: 'default' | 'only1P' | 'regionalize1p'
+  simulationBehavior: 'default' | 'only1P' | 'regionalize1p',
+  ignoreSimulationQuantity: boolean = false
 ) => {
   const mergedProduct = { ...product }
 
@@ -46,7 +51,7 @@ export const mergeProductWithItems = (
       item.sellers = item.sellers.map((seller: any, simulationIndex: any) => {
         const sellerSimulation = simulationItem.sellers[simulationIndex]
 
-        return mergeSellers(seller, sellerSimulation, defaultSeller)
+        return mergeSellers(seller, sellerSimulation, defaultSeller, ignoreSimulationQuantity)
       })
     } else {
       const seller1PIndex = item.sellers.findIndex((seller) => seller.sellerId === '1')
@@ -65,7 +70,7 @@ export const mergeProductWithItems = (
               }
         }
 
-        return mergeSellers(seller, simulationItem.sellers[0], sellerDefault)
+        return mergeSellers(seller, simulationItem.sellers[0], sellerDefault, ignoreSimulationQuantity)
       })
     }
   })
