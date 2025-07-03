@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.10.0] - 2025-07-02
+
+### Added
+
+- `tags` field to search product
+
+## [1.9.0] - 2025-06-10
+
 ### Changed
 - `deliveryPromisesBadges` field to search product to allow objects instead of string
 
