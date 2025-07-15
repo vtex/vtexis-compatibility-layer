@@ -50,7 +50,7 @@ export const mergeProductWithItems = (
 
       item.sellers = item.sellers.map((seller: any, simulationIndex: any) => {
         // Ignore seller 1 simulation if only3P
-        if (simulationBehavior === 'only3P' && seller.id === '1') {
+        if (simulationBehavior === 'only3P' && seller.sellerId === '1') {
           return seller
         }
 
