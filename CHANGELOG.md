@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- only3p simulationBehavior
+
 ## [1.10.0] - 2025-07-02
 
 ### Added
