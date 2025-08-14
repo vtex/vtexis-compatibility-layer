@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Now merge simulation sellers by sellerId instead of array position
+
 ## [1.11.0] - 2025-07-15
 
 ### Added
