@@ -38,7 +38,7 @@ export const mergeProductWithItems = (
   product: SearchProduct,
   items: SearchItem[],
   simulationBehavior: 'default' | 'only1P' | 'regionalize1p' | 'only3P',
-  ignoreSimulationQuantity: boolean = false
+  ignoreSimulationQuantity = false
 ) => {
   const mergedProduct = { ...product }
 
@@ -48,15 +48,17 @@ export const mergeProductWithItems = (
     if (simulationBehavior !== 'only1P') {
       const defaultSeller = getDefaultSeller(simulationItem.sellers)
 
-      item.sellers = item.sellers.map((seller: any, simulationIndex: any) => {
+      item.sellers = item.sellers.map((seller: Seller) => {
         // Ignore seller 1 simulation if only3P
         if (simulationBehavior === 'only3P' && seller.sellerId === '1') {
           return seller
         }
 
-        const sellerSimulation = simulationItem.sellers[simulationIndex]
+        const sellerSimulation = simulationItem.sellers.find(
+          (simulationSeller) => simulationSeller.sellerId === seller.sellerId
+        )
 
-        return mergeSellers(seller, sellerSimulation, defaultSeller, ignoreSimulationQuantity)
+        return mergeSellers(seller, sellerSimulation ?? seller, defaultSeller, ignoreSimulationQuantity)
       })
     } else {
       const seller1PIndex = item.sellers.findIndex((seller) => seller.sellerId === '1')
