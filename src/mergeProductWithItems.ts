@@ -58,7 +58,11 @@ export const mergeProductWithItems = (
           (simulationSeller) => simulationSeller.sellerId === seller.sellerId
         )
 
-        return mergeSellers(seller, sellerSimulation ?? seller, defaultSeller, ignoreSimulationQuantity)
+        if (sellerSimulation == null) {
+          return seller
+        }
+
+        return mergeSellers(seller, sellerSimulation, defaultSeller, ignoreSimulationQuantity)
       })
     } else {
       const seller1PIndex = item.sellers.findIndex((seller) => seller.sellerId === '1')
