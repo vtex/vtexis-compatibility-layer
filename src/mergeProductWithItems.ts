@@ -1,4 +1,4 @@
-const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string, ignoreSimulationQuantity?: boolean) => {
+const mergeSellers = (sellerA: Seller, sellerB: Seller, ignoreSimulationQuantity?: boolean) => {
   if (sellerB.error) {
     return sellerA
   }
@@ -16,22 +16,8 @@ const mergeSellers = (sellerA: Seller, sellerB: Seller, defaultSeller?: string, 
     Tax: sellerB.commertialOffer.Tax ?? sellerA.commertialOffer.Tax,
   }
 
-  if (!defaultSeller) {
-    return sellerA
-  }
+  return sellerA
 
-  return {
-    ...sellerA,
-    sellerDefault: sellerA.sellerId === defaultSeller,
-  }
-}
-
-const getDefaultSeller = (sellers: Seller[]) => {
-  const sellersWithStock = sellers.filter((seller) => seller.commertialOffer.AvailableQuantity !== 0)
-
-  return sellersWithStock
-    ?.sort((a, b) => a.commertialOffer.spotPrice - b.commertialOffer.spotPrice)
-    .map((seller) => seller.sellerId)[0]
 }
 
 export const mergeProductWithItems = (
@@ -46,8 +32,6 @@ export const mergeProductWithItems = (
     const simulationItem = items[itemIndex]
 
     if (simulationBehavior !== 'only1P') {
-      const defaultSeller = getDefaultSeller(simulationItem.sellers)
-
       item.sellers = item.sellers.map((seller: Seller) => {
         // Ignore seller 1 simulation if only3P
         if (simulationBehavior === 'only3P' && seller.sellerId === '1') {
@@ -62,26 +46,20 @@ export const mergeProductWithItems = (
           return seller
         }
 
-        return mergeSellers(seller, sellerSimulation, defaultSeller, ignoreSimulationQuantity)
+        return mergeSellers(seller, sellerSimulation, ignoreSimulationQuantity)
       })
     } else {
       const seller1PIndex = item.sellers.findIndex((seller) => seller.sellerId === '1')
       const sellers = Array.from(item.sellers)
 
       sellers[seller1PIndex] = simulationItem.sellers[0]
-      const sellerDefault = getDefaultSeller(sellers)
 
       item.sellers = item.sellers.map((seller) => {
         if (seller.sellerId !== '1') {
-          return !sellerDefault
-            ? seller
-            : {
-                ...seller,
-                sellerDefault: seller.sellerId === sellerDefault,
-              }
+          return seller
         }
 
-        return mergeSellers(seller, simulationItem.sellers[0], sellerDefault, ignoreSimulationQuantity)
+        return mergeSellers(seller, simulationItem.sellers[0], ignoreSimulationQuantity)
       })
     }
   })
