@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.11.2] - 2025-08-15
+
+### Removed
+
+- `getDefaultSeller` redundancy
+
 ## [1.11.1] - 2025-08-14
 
 ### Changed
