@@ -244,7 +244,8 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
     rule: product.rule,
     releaseDate: product.release,
     deliveryPromisesBadges: product.deliveryPromisesBadges,
-    tags: product.tags
+    tags: product.tags,
+    manufacturerCode: product.manufacturerCode,
   }
 
   const specifications: DynamicKey<Specification> = {}

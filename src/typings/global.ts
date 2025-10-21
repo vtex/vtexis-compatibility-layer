@@ -55,7 +55,8 @@ declare global {
     spotPriceText?: string
     rule?: Rule
     deliveryPromisesBadges?: object[]
-    tags?: object[]
+    tags?: object[],
+    manufacturerCode?: string
   }
 
   type Rule = {
@@ -539,7 +540,8 @@ declare global {
     specificationGroups: SpecificationGroup[]
     priceRange: PriceRange
     deliveryPromisesBadges?: object[]
-    tags?: object[]
+    tags?: object[],
+    manufacturerCode?: string
   }
 
   interface SpecificationGroup {
