@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `manufacturerCode` field to search product
+
 ## [1.11.2] - 2025-08-15
 
 ### Removed
