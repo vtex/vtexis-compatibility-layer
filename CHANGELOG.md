@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.11.2] - 2025-10-22
+
 ### Added
 
 - `manufacturerCode` field to search product
