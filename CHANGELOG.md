@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Add specification field in `convertISProduct`
+
 ## [1.11.2] - 2025-10-22
 
 ### Added
