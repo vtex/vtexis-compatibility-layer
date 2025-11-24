@@ -287,5 +287,7 @@ export const convertISProduct = (product: BiggySearchProduct, tradePolicy?: stri
   convertedProduct.properties = getProperties(convertedProduct, specifications)
   convertedProduct.specificationGroups = getSpecificationGroups(convertedProduct, specificationGroups, specifications)
 
+  convertedProduct.specification = product.specification
+
   return convertedProduct
 }
