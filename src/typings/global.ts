@@ -57,6 +57,7 @@ declare global {
     deliveryPromisesBadges?: object[]
     tags?: object[],
     manufacturerCode?: string
+    specification?: string
   }
 
   type Rule = {
