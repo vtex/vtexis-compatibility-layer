@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.12.1] - 2025-12-09
+
 ### Added
 
 - Add specification field in `convertISProduct`
