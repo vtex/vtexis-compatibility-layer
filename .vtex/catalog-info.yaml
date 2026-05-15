@@ -6,6 +6,8 @@ metadata:
   annotations:
     github.com/project-slug: vtex/vtexis-compatibility-layer
     vtex.com/application-id: QORT4ZFG
+    vtex.com/sdd-check-skip: 'true'
+    vtex.com/sdd-check-skip-reason: This component is being decommissioned with the migration to intsch
 spec:
   type: library
   lifecycle: stable
